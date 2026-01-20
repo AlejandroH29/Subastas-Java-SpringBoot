@@ -9,7 +9,7 @@ import com.dhernandez.auction_service.domain.model.Auction;
 public class createAuctionUseCaseImp implements createAuctionUseCase{
     private existAuctionByTitlePort existAuctionPort;
     private saveAuctionPort saveAcution; 
-    createAuctionUseCaseImp(existAuctionByTitlePort existAuctionPort, saveAuctionPort saveAuction){
+    public createAuctionUseCaseImp(existAuctionByTitlePort existAuctionPort, saveAuctionPort saveAuction){
         this.existAuctionPort = existAuctionPort;
         this.saveAcution = saveAuction;
     }
