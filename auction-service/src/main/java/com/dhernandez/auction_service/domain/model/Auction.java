@@ -44,6 +44,19 @@ public class Auction{
         this.winnerId = null;
     }
 
+    public Auction(String idAuction, String title, String description,  LocalDateTime startTime, LocalDateTime endTime, EnumAuction status, Double startingPrice, Double currentPrice, String ownerId, String winnerId){
+        this.idAuction = idAuction;
+        this.title = title;
+        this.description = description;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.status = status;
+        this.startingPrice = startingPrice;
+        this.currentPrice = currentPrice;
+        this.ownerId = ownerId;
+        this.winnerId = winnerId;
+    }
+
     public String getIdAuction(){
         return idAuction;
     }
