@@ -1,5 +1,7 @@
 package com.dhernandez.auction_service.application.useCase;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import com.dhernandez.auction_service.application.command.createAuctionCommand;
 import com.dhernandez.auction_service.application.port.out.existAuctionByTitlePort;
 import com.dhernandez.auction_service.application.port.out.saveAuctionPort;
@@ -13,7 +15,8 @@ public class createAuctionUseCaseImp implements createAuctionUseCase{
         this.existAuctionPort = existAuctionPort;
         this.saveAcution = saveAuction;
     }
-
+    
+    @Transactional
     @Override
     public createAuctionResult createAuction(createAuctionCommand command) {
         Auction auction;
