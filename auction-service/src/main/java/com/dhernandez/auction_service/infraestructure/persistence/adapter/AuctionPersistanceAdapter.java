@@ -27,7 +27,7 @@ public class AuctionPersistanceAdapter implements existAuctionByTitlePort, saveA
 
     @Override
     public boolean existAuction(String title) {
-        boolean verification = auctionRepository.existByTitle(title);
+        boolean verification = auctionRepository.existsByTitle(title);
         if(verification){
             throw new ErrorCreatingAuction("Ya existe una subasta con este titulo");
         }
