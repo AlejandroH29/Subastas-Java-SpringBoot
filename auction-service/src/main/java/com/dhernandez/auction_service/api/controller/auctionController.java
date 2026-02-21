@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dhernandez.auction_service.api.dto.createAuctionRequest;
 import com.dhernandez.auction_service.application.command.createAuctionCommand;
 import com.dhernandez.auction_service.application.result.createAuctionResult;
-import com.dhernandez.auction_service.application.useCase.createAuctionUseCase;
+import com.dhernandez.auction_service.application.useCase.Auction.createAuctionUseCase;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

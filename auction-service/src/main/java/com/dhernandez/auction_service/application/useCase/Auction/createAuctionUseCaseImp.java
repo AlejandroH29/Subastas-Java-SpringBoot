@@ -1,10 +1,10 @@
-package com.dhernandez.auction_service.application.useCase;
+package com.dhernandez.auction_service.application.useCase.Auction;
 
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dhernandez.auction_service.application.command.createAuctionCommand;
-import com.dhernandez.auction_service.application.port.out.existAuctionByTitlePort;
-import com.dhernandez.auction_service.application.port.out.saveAuctionPort;
+import com.dhernandez.auction_service.application.port.out.Auction.existAuctionByTitlePort;
+import com.dhernandez.auction_service.application.port.out.Auction.saveAuctionPort;
 import com.dhernandez.auction_service.application.result.createAuctionResult;
 import com.dhernandez.auction_service.domain.model.Auction;
 

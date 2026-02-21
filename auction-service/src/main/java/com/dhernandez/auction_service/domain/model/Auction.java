@@ -3,6 +3,7 @@ package com.dhernandez.auction_service.domain.model;
 import java.time.LocalDateTime;
 
 import com.dhernandez.auction_service.domain.exception.ErrorCreatingAuction;
+import com.dhernandez.auction_service.domain.model.Enum.EnumAuction;
 
 public class Auction{
     private String idAuction;

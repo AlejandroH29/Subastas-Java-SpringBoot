@@ -2,7 +2,7 @@ package com.dhernandez.auction_service.application.result;
 
 import java.time.LocalDateTime;
 
-import com.dhernandez.auction_service.domain.model.EnumAuction;
+import com.dhernandez.auction_service.domain.model.Enum.EnumAuction;
 
 public class createAuctionResult {
     private String idAuction;

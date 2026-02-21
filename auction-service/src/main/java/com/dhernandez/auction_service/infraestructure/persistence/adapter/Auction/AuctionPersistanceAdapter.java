@@ -1,12 +1,12 @@
-package com.dhernandez.auction_service.infraestructure.persistence.adapter;
+package com.dhernandez.auction_service.infraestructure.persistence.adapter.Auction;
 
 import org.springframework.stereotype.Component;
 
-import com.dhernandez.auction_service.application.port.out.existAuctionByTitlePort;
-import com.dhernandez.auction_service.application.port.out.saveAuctionPort;
+import com.dhernandez.auction_service.application.port.out.Auction.existAuctionByTitlePort;
+import com.dhernandez.auction_service.application.port.out.Auction.saveAuctionPort;
 import com.dhernandez.auction_service.domain.exception.ErrorCreatingAuction;
 import com.dhernandez.auction_service.domain.model.Auction;
-import com.dhernandez.auction_service.domain.model.EnumAuction;
+import com.dhernandez.auction_service.domain.model.Enum.EnumAuction;
 import com.dhernandez.auction_service.infraestructure.persistence.AuctionJpaEntity;
 import com.dhernandez.auction_service.infraestructure.persistence.repository.AuctionJpaRepository;
 
