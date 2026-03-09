@@ -2,14 +2,14 @@ package com.dhernandez.auction_service.api.dto;
 
 import java.time.LocalDateTime;
 
-public class createAuctionRequest {
+public class CreateAuctionRequest {
     private String title;
     private String description;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private Double startingPrice;
     private String ownerId;
-    public createAuctionRequest(String title, String description,  LocalDateTime startTime, LocalDateTime endTime, Double startingPrice, String ownerId){
+    public CreateAuctionRequest(String title, String description,  LocalDateTime startTime, LocalDateTime endTime, Double startingPrice, String ownerId){
         this.title = title;
         this.description = description;
         this.startTime = startTime;

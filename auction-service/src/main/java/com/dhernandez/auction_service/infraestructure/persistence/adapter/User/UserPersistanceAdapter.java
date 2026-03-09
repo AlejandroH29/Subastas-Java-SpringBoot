@@ -2,9 +2,9 @@ package com.dhernandez.auction_service.infraestructure.persistence.adapter.User;
 
 import org.springframework.stereotype.Component;
 
-import com.dhernandez.auction_service.application.port.out.User.existUserByEmailPort;
-import com.dhernandez.auction_service.application.port.out.User.existUserByUserNamePort;
-import com.dhernandez.auction_service.application.port.out.User.saveUserPort;
+import com.dhernandez.auction_service.application.port.out.User.ExistUserByEmailPort;
+import com.dhernandez.auction_service.application.port.out.User.ExistUserByUserNamePort;
+import com.dhernandez.auction_service.application.port.out.User.SaveUserPort;
 import com.dhernandez.auction_service.domain.exception.ErrorCreatingUser;
 import com.dhernandez.auction_service.domain.model.User;
 import com.dhernandez.auction_service.domain.model.Enum.EnumRoleUser;
@@ -12,7 +12,7 @@ import com.dhernandez.auction_service.infraestructure.persistence.UserJpaEntity;
 import com.dhernandez.auction_service.infraestructure.persistence.repository.UserJpaRepository;
 
 @Component
-public class UserPersistanceAdapter implements existUserByEmailPort, existUserByUserNamePort, saveUserPort {
+public class UserPersistanceAdapter implements ExistUserByEmailPort, ExistUserByUserNamePort, SaveUserPort {
 
     private final UserJpaRepository userRepository;
     

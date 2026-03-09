@@ -3,20 +3,20 @@ package com.dhernandez.auction_service.infraestructure.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.dhernandez.auction_service.application.port.out.User.existUserByEmailPort;
-import com.dhernandez.auction_service.application.port.out.User.existUserByUserNamePort;
-import com.dhernandez.auction_service.application.port.out.User.madeTokenPasswordPort;
-import com.dhernandez.auction_service.application.port.out.User.passwordHashPort;
-import com.dhernandez.auction_service.application.port.out.User.saveTokenVerificationPort;
-import com.dhernandez.auction_service.application.port.out.User.saveUserPort;
-import com.dhernandez.auction_service.application.port.out.User.sendEmailVerificationPort;
-import com.dhernandez.auction_service.application.useCase.User.createUserUseCase;
-import com.dhernandez.auction_service.application.useCase.User.createUserUseCaseImp;
+import com.dhernandez.auction_service.application.Service.EmailService;
+import com.dhernandez.auction_service.application.port.out.User.ExistUserByEmailPort;
+import com.dhernandez.auction_service.application.port.out.User.ExistUserByUserNamePort;
+import com.dhernandez.auction_service.application.port.out.User.MadeTokenPasswordPort;
+import com.dhernandez.auction_service.application.port.out.User.PasswordHashPort;
+import com.dhernandez.auction_service.application.port.out.User.SaveTokenVerificationPort;
+import com.dhernandez.auction_service.application.port.out.User.SaveUserPort;
+import com.dhernandez.auction_service.application.useCase.User.CreateUserUseCase;
+import com.dhernandez.auction_service.application.useCase.User.CreateUserUseCaseImp;
 
 @Configuration
 public class UserUseCaseConfig {
     @Bean
-    public createUserUseCase createUserUseCase(saveUserPort saveUserPort, existUserByEmailPort existUserByEmailPort, existUserByUserNamePort existUserByUserNamePort, sendEmailVerificationPort sendEmailVerificationPort, passwordHashPort passwordHashPort, madeTokenPasswordPort madeTokenPassword, saveTokenVerificationPort saveTokenVerificationPort){
-        return new createUserUseCaseImp(saveUserPort, existUserByEmailPort, existUserByUserNamePort, sendEmailVerificationPort, passwordHashPort, madeTokenPassword, saveTokenVerificationPort);
+    public CreateUserUseCase createUserUseCase(SaveUserPort saveUserPort, ExistUserByEmailPort existUserByEmailPort, ExistUserByUserNamePort existUserByUserNamePort, PasswordHashPort passwordHashPort, MadeTokenPasswordPort madeTokenPassword, SaveTokenVerificationPort saveTokenVerificationPort, EmailService emailService){
+        return new CreateUserUseCaseImp(saveUserPort, existUserByEmailPort, existUserByUserNamePort, passwordHashPort, madeTokenPassword, saveTokenVerificationPort, emailService);
     }
 }

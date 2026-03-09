@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 import com.dhernandez.auction_service.domain.model.Enum.EnumAuction;
 
-public class createAuctionResult {
+public class CreateAuctionResult {
     private String idAuction;
     private String title;
     private String description;
@@ -13,7 +13,7 @@ public class createAuctionResult {
     private LocalDateTime endTime;
     private Double startingPrice;
 
-    public createAuctionResult(String idAuction, String title, String description, EnumAuction status, LocalDateTime startTime, LocalDateTime endTime, Double startingPrice){
+    public CreateAuctionResult(String idAuction, String title, String description, EnumAuction status, LocalDateTime startTime, LocalDateTime endTime, Double startingPrice){
         this.idAuction = idAuction;
         this.title = title;
         this.description = description;

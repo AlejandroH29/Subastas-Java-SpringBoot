@@ -4,15 +4,15 @@ import java.security.SecureRandom;
 
 import org.springframework.stereotype.Component;
 
-import com.dhernandez.auction_service.application.port.out.User.madeTokenPasswordPort;
-import com.dhernandez.auction_service.application.port.out.User.saveTokenVerificationPort;
+import com.dhernandez.auction_service.application.port.out.User.MadeTokenPasswordPort;
+import com.dhernandez.auction_service.application.port.out.User.SaveTokenVerificationPort;
 import com.dhernandez.auction_service.domain.model.EmailVerificationToken;
 import com.dhernandez.auction_service.infraestructure.persistence.TokenJpaEntity;
 import com.dhernandez.auction_service.infraestructure.persistence.repository.TokenJpaRepository;
 
 
 @Component
-public class TokenGeneratorAdapter implements madeTokenPasswordPort, saveTokenVerificationPort{
+public class TokenGeneratorAdapter implements MadeTokenPasswordPort, SaveTokenVerificationPort{
     private final TokenJpaRepository tokenRepository;
 
     public TokenGeneratorAdapter(TokenJpaRepository tokenRepository){

@@ -2,43 +2,43 @@ package com.dhernandez.auction_service.application.useCase.User;
 
 import java.time.LocalDateTime;
 
-import com.dhernandez.auction_service.application.command.createUserCommand;
-import com.dhernandez.auction_service.application.port.out.User.existUserByEmailPort;
-import com.dhernandez.auction_service.application.port.out.User.existUserByUserNamePort;
-import com.dhernandez.auction_service.application.port.out.User.madeTokenPasswordPort;
-import com.dhernandez.auction_service.application.port.out.User.passwordHashPort;
-import com.dhernandez.auction_service.application.port.out.User.saveTokenVerificationPort;
-import com.dhernandez.auction_service.application.port.out.User.saveUserPort;
-import com.dhernandez.auction_service.application.port.out.User.sendEmailVerificationPort;
-import com.dhernandez.auction_service.application.result.createUserResult;
+import com.dhernandez.auction_service.application.Service.EmailService;
+import com.dhernandez.auction_service.application.command.CreateUserCommand;
+import com.dhernandez.auction_service.application.port.out.User.ExistUserByEmailPort;
+import com.dhernandez.auction_service.application.port.out.User.ExistUserByUserNamePort;
+import com.dhernandez.auction_service.application.port.out.User.MadeTokenPasswordPort;
+import com.dhernandez.auction_service.application.port.out.User.PasswordHashPort;
+import com.dhernandez.auction_service.application.port.out.User.SaveTokenVerificationPort;
+import com.dhernandez.auction_service.application.port.out.User.SaveUserPort;
+import com.dhernandez.auction_service.application.result.CreateUserResult;
 import com.dhernandez.auction_service.domain.model.EmailVerificationToken;
 import com.dhernandez.auction_service.domain.model.User;
 
 import jakarta.transaction.Transactional;
 
-public class createUserUseCaseImp implements createUserUseCase{
+public class CreateUserUseCaseImp implements CreateUserUseCase{
 
-    final saveUserPort saveUserPort;
-    final existUserByEmailPort existUserByEmailPort;
-    final existUserByUserNamePort existUserByUserNamePort;
-    final sendEmailVerificationPort sendEmailVerificationPort;
-    final passwordHashPort passwordHashPort;
-    final madeTokenPasswordPort madeTokenPassword;
-    final saveTokenVerificationPort saveTokenVerificationPort;
+    final SaveUserPort saveUserPort;
+    final ExistUserByEmailPort existUserByEmailPort;
+    final ExistUserByUserNamePort existUserByUserNamePort;
+    final PasswordHashPort passwordHashPort;
+    final MadeTokenPasswordPort madeTokenPassword;
+    final SaveTokenVerificationPort saveTokenVerificationPort;
+    final EmailService emailService;
 
-    public createUserUseCaseImp(saveUserPort saveUserPort, existUserByEmailPort existUserByEmailPort, existUserByUserNamePort existUserByUserNamePort, sendEmailVerificationPort sendEmailVerificationPort, passwordHashPort passwordHashPort, madeTokenPasswordPort madeTokenPassword, saveTokenVerificationPort saveTokenVerificationPort){
+    public CreateUserUseCaseImp(SaveUserPort saveUserPort, ExistUserByEmailPort existUserByEmailPort, ExistUserByUserNamePort existUserByUserNamePort, PasswordHashPort passwordHashPort, MadeTokenPasswordPort madeTokenPassword, SaveTokenVerificationPort saveTokenVerificationPort, EmailService emailService){
         this.saveUserPort = saveUserPort;
         this.existUserByEmailPort = existUserByEmailPort;
         this.existUserByUserNamePort = existUserByUserNamePort;
-        this.sendEmailVerificationPort = sendEmailVerificationPort;
         this.passwordHashPort = passwordHashPort;
         this.madeTokenPassword = madeTokenPassword;
         this.saveTokenVerificationPort = saveTokenVerificationPort;
+        this.emailService = emailService;
     }
 
     @Transactional
     @Override
-    public createUserResult createUser(createUserCommand command) {
+    public CreateUserResult createUser(CreateUserCommand command) {
         existUserByEmailPort.existUserByEmail(command.getEmail());
         existUserByUserNamePort.existUserByUserName(command.getUserName());
         String passwordHashed = passwordHashPort.hash(command.getPassword());
@@ -47,7 +47,7 @@ public class createUserUseCaseImp implements createUserUseCase{
         int token = madeTokenPassword.token();
         EmailVerificationToken tokenDomain = new EmailVerificationToken(savedUser.getIdUser(), token, LocalDateTime.now().plusMinutes(5), LocalDateTime.now());
         saveTokenVerificationPort.saveToken(tokenDomain);
-        sendEmailVerificationPort.sendEmailVerification(user.getEmail(), token);
-        return new createUserResult(savedUser.getIdUser(), savedUser.getEmail(), savedUser.getUserName(), savedUser.getVerified(), savedUser.getRole());
+        emailService.sendEmailVerification(savedUser.getEmail(), savedUser.getUserName(), tokenDomain.getToken());
+        return new CreateUserResult(savedUser.getIdUser(), savedUser.getEmail(), savedUser.getUserName(), savedUser.getVerified(), savedUser.getRole());
     }
 }

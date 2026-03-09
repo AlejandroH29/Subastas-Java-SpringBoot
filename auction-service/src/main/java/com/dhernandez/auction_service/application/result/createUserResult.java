@@ -2,14 +2,14 @@ package com.dhernandez.auction_service.application.result;
 
 import com.dhernandez.auction_service.domain.model.Enum.EnumRoleUser;
 
-public class createUserResult {
+public class CreateUserResult {
     private String idUser;
     private String email;
     private String userName;
     private boolean verified;
     private EnumRoleUser role;
 
-    public createUserResult(String idUser, String email, String userName, boolean verified, EnumRoleUser role){
+    public CreateUserResult(String idUser, String email, String userName, boolean verified, EnumRoleUser role){
         this.idUser = idUser;
         this.email = email;
         this.userName = userName;

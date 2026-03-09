@@ -1,12 +1,11 @@
-package com.dhernandez.auction_service.application.command;
+package com.dhernandez.auction_service.api.dto;
 
-
-public class CreateUserCommand {
+public class CreateUserRequest {
     private String email;
     private String userName;
     private String password;
 
-    public CreateUserCommand(String email, String userName, String password){
+    public CreateUserRequest(String email, String userName, String password){
         this.email = email;
         this.userName = userName;
         this.password = password;
