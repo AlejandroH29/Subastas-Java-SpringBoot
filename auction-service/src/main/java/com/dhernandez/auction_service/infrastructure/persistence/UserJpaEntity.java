@@ -1,4 +1,4 @@
-package com.dhernandez.auction_service.infraestructure.persistence;
+package com.dhernandez.auction_service.infrastructure.persistence;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

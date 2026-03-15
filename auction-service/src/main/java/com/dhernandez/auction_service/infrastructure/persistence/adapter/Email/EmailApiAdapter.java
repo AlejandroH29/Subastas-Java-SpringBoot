@@ -1,4 +1,4 @@
-package com.dhernandez.auction_service.infraestructure.persistence.adapter.Email;
+package com.dhernandez.auction_service.infrastructure.persistence.adapter.Email;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;

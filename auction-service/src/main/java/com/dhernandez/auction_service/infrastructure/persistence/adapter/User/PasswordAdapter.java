@@ -1,4 +1,4 @@
-package com.dhernandez.auction_service.infraestructure.persistence.adapter.User;
+package com.dhernandez.auction_service.infrastructure.persistence.adapter.User;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;

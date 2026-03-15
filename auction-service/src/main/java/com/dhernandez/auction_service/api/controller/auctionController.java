@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dhernandez.auction_service.api.dto.CreateAuctionRequest;
-import com.dhernandez.auction_service.application.command.createAuctionCommand;
+import com.dhernandez.auction_service.application.command.CreateAuctionCommand;
 import com.dhernandez.auction_service.application.result.CreateAuctionResult;
 import com.dhernandez.auction_service.application.useCase.Auction.CreateAuctionUseCase;
 
@@ -23,7 +23,7 @@ public class AuctionController {
 
     @PostMapping("/createAuction")
     public ResponseEntity<CreateAuctionResult>createAuction(@RequestBody CreateAuctionRequest entryAuctionDTO){
-        createAuctionCommand auctionCommand = new createAuctionCommand(entryAuctionDTO.getTitle(), entryAuctionDTO.getDescription(), entryAuctionDTO.getStartTime(), entryAuctionDTO.getEndTime(), entryAuctionDTO.getStartingPrice(), entryAuctionDTO.getOwnerId());
+        CreateAuctionCommand auctionCommand = new CreateAuctionCommand(entryAuctionDTO.getTitle(), entryAuctionDTO.getDescription(), entryAuctionDTO.getStartTime(), entryAuctionDTO.getEndTime(), entryAuctionDTO.getStartingPrice(), entryAuctionDTO.getOwnerId());
         return new ResponseEntity<CreateAuctionResult>(auctionUseCase.createAuction(auctionCommand), HttpStatus.CREATED);
     }
 }

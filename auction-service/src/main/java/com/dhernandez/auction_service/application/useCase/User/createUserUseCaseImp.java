@@ -14,7 +14,7 @@ import com.dhernandez.auction_service.application.result.CreateUserResult;
 import com.dhernandez.auction_service.domain.model.EmailVerificationToken;
 import com.dhernandez.auction_service.domain.model.User;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 public class CreateUserUseCaseImp implements CreateUserUseCase{
 

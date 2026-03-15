@@ -3,6 +3,8 @@ package com.dhernandez.auction_service.domain.model;
 import java.time.LocalDateTime;
 
 import com.dhernandez.auction_service.domain.exception.ErrorCreatingToken;
+import com.dhernandez.auction_service.domain.exception.ErrorTokenAlreadyUsed;
+import com.dhernandez.auction_service.domain.exception.ErrorTokenExpired;
 
 public class EmailVerificationToken {
     private String id;
@@ -13,6 +15,10 @@ public class EmailVerificationToken {
     private LocalDateTime createdAt;
 
     public EmailVerificationToken(String userId, Integer token, LocalDateTime expirationDate, LocalDateTime createdAt){
+        if (expirationDate == null || createdAt == null) {
+            throw new ErrorCreatingToken("Las fechas no pueden ser null");
+        }
+
         if (userId == null || userId.isBlank()) {
             throw new ErrorCreatingToken("El userId no puede ser vacío");
         }
@@ -25,16 +31,21 @@ public class EmailVerificationToken {
             throw new ErrorCreatingToken("La fecha de expiración no puede ser anterior a la creación");
         }
 
-        if (expirationDate == null || createdAt == null) {
-            throw new ErrorCreatingToken("Las fechas no pueden ser null");
-        }
-
         this.id = null;
         this.userId = userId;
         this.token = token;
         this.expirationDate = expirationDate;
         this.createdAt = createdAt;
-        this.used = false;
+        this.used = false;      
+    }
+
+    public EmailVerificationToken(String id, String userId, Integer token, boolean used, LocalDateTime expirationDate, LocalDateTime createdAt){
+        this.id = id;
+        this.userId = userId;
+        this.token = token;
+        this.used = used;
+        this.expirationDate = expirationDate;
+        this.createdAt = createdAt;
     }
 
     public void markAsUsed() {
@@ -49,12 +60,15 @@ public class EmailVerificationToken {
 
     public boolean isExpired() {
         if(LocalDateTime.now().isAfter(this.expirationDate)){
-            return true;
+            throw new ErrorTokenExpired("El token esta expirado");
         }
         return false;
     }
 
     public boolean isUsed() {
+        if(this.used){
+            throw new ErrorTokenAlreadyUsed("El token ya se a usado");
+        }
         return used;
     }
 

@@ -15,7 +15,7 @@ public class User {
         if(email == null || email.isBlank()){
             throw new ErrorCreatingUser("El email no puede estar vacio");
         }
-        email.trim().toLowerCase();
+        email = email.trim().toLowerCase();
         String emailBasicRegex = ".+@.+";
         if(!email.matches(emailBasicRegex)){
             throw new ErrorCreatingUser("El email debe tener estructura minima: '@'");

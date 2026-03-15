@@ -1,4 +1,4 @@
-package com.dhernandez.auction_service.infraestructure.persistence.adapter.User;
+package com.dhernandez.auction_service.infrastructure.persistence.adapter.User;
 
 import org.springframework.stereotype.Component;
 
@@ -8,8 +8,8 @@ import com.dhernandez.auction_service.application.port.out.User.SaveUserPort;
 import com.dhernandez.auction_service.domain.exception.ErrorCreatingUser;
 import com.dhernandez.auction_service.domain.model.User;
 import com.dhernandez.auction_service.domain.model.Enum.EnumRoleUser;
-import com.dhernandez.auction_service.infraestructure.persistence.UserJpaEntity;
-import com.dhernandez.auction_service.infraestructure.persistence.repository.UserJpaRepository;
+import com.dhernandez.auction_service.infrastructure.persistence.UserJpaEntity;
+import com.dhernandez.auction_service.infrastructure.persistence.repository.UserJpaRepository;
 
 @Component
 public class UserPersistanceAdapter implements ExistUserByEmailPort, ExistUserByUserNamePort, SaveUserPort {
@@ -23,6 +23,9 @@ public class UserPersistanceAdapter implements ExistUserByEmailPort, ExistUserBy
     @Override
     public User saveUser(User user) {
         UserJpaEntity userEntity = new UserJpaEntity(user.getEmail(), user.getUserName(), user.getPassword(), user.getVerified(), user.getRole().toString());
+        if(user.getIdUser() != null){
+            userEntity.setId(Long.parseLong(user.getIdUser()));
+        }
         UserJpaEntity userSaved = userRepository.save(userEntity);
         return new User(userSaved.getId().toString(), userSaved.getEmail(), userSaved.getUserName(), userSaved.getPassword(), userSaved.getVerified(), EnumRoleUser.valueOf(userSaved.getRole()));
     }

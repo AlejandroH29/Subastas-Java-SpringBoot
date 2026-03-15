@@ -1,4 +1,4 @@
-package com.dhernandez.auction_service.infraestructure.config;
+package com.dhernandez.auction_service.infrastructure.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
