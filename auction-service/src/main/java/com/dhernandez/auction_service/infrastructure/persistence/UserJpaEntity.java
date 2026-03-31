@@ -21,6 +21,7 @@ public class UserJpaEntity {
     @Column(name = "id")
     private Long id;
     private String email;
+    @Column(name = "username")
     private String userName;
     private String password;
     private Boolean verified;

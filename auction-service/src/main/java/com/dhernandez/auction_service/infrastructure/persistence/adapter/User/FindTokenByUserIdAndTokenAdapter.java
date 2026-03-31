@@ -18,15 +18,15 @@ public class FindTokenByUserIdAndTokenAdapter implements FindTokenByUserIdAndTok
         this.tokenRepository = tokenRepository;
     }
     @Override
-    public EmailVerificationToken findToken(String userId, int token) {
+    public EmailVerificationToken findToken(Long userId, int token) {
         TokenJpaEntity tokenFound = findTokenJpaEntity(userId, token);
         if(tokenFound == null){
             throw new ErrorFindingToken("No se encontro el token");
         }
-        return new EmailVerificationToken(tokenFound.getId().toString(),tokenFound.getUserId(), tokenFound.getToken(), tokenFound.getUsed(), tokenFound.getExpirationDate(), tokenFound.getCreationAt());
+        return new EmailVerificationToken(tokenFound.getId(),tokenFound.getUserId(), tokenFound.getToken(), tokenFound.getUsed(), tokenFound.getExpirationDate(), tokenFound.getCreationAt());
     }
 
-    public TokenJpaEntity findTokenJpaEntity(String userId, int token){
+    public TokenJpaEntity findTokenJpaEntity(Long userId, int token){
         Optional<TokenJpaEntity> tokenFound = tokenRepository.findByUserIdAndToken(userId, token);
         return tokenFound.orElse(null);
     }

@@ -7,19 +7,19 @@ import com.dhernandez.auction_service.domain.exception.ErrorTokenAlreadyUsed;
 import com.dhernandez.auction_service.domain.exception.ErrorTokenExpired;
 
 public class EmailVerificationToken {
-    private String id;
-    private String userId;
+    private Long id;
+    private Long userId;
     private Integer token;
     private boolean used;
     private LocalDateTime expirationDate;
     private LocalDateTime createdAt;
 
-    public EmailVerificationToken(String userId, Integer token, LocalDateTime expirationDate, LocalDateTime createdAt){
+    public EmailVerificationToken(Long userId, Integer token, LocalDateTime expirationDate, LocalDateTime createdAt){
         if (expirationDate == null || createdAt == null) {
             throw new ErrorCreatingToken("Las fechas no pueden ser null");
         }
 
-        if (userId == null || userId.isBlank()) {
+        if (userId == null) {
             throw new ErrorCreatingToken("El userId no puede ser vacío");
         }
 
@@ -39,7 +39,7 @@ public class EmailVerificationToken {
         this.used = false;      
     }
 
-    public EmailVerificationToken(String id, String userId, Integer token, boolean used, LocalDateTime expirationDate, LocalDateTime createdAt){
+    public EmailVerificationToken(Long id, Long userId, Integer token, boolean used, LocalDateTime expirationDate, LocalDateTime createdAt){
         this.id = id;
         this.userId = userId;
         this.token = token;
@@ -72,11 +72,11 @@ public class EmailVerificationToken {
         return used;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public String getUserId() {
+    public Long getUserId() {
         return userId;
     }
 

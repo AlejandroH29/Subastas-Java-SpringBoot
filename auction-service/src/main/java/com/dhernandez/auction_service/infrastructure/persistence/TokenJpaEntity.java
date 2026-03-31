@@ -24,15 +24,15 @@ public class TokenJpaEntity {
     @Column(name = "id")
     private Long id;
     @Column(name = "userid")
-    private String userId;
+    private Long userId;
     private Integer token;
     private Boolean used;
     @Column(name = "expirationdate")
     private LocalDateTime expirationDate;
-    @Column(name = "creationAt")
+    @Column(name = "createdat")
     private LocalDateTime creationAt;
 
-    public TokenJpaEntity(String userId, Integer token, Boolean used, LocalDateTime expirationDate, LocalDateTime creationAt){
+    public TokenJpaEntity(Long userId, Integer token, Boolean used, LocalDateTime expirationDate, LocalDateTime creationAt){
         this.userId = userId;
         this.token = token;
         this.used = used;

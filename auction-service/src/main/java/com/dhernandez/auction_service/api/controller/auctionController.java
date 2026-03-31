@@ -8,6 +8,8 @@ import com.dhernandez.auction_service.application.command.CreateAuctionCommand;
 import com.dhernandez.auction_service.application.result.CreateAuctionResult;
 import com.dhernandez.auction_service.application.useCase.Auction.CreateAuctionUseCase;
 
+import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +24,7 @@ public class AuctionController {
     @Autowired CreateAuctionUseCase auctionUseCase;
 
     @PostMapping("/createAuction")
-    public ResponseEntity<CreateAuctionResult>createAuction(@RequestBody CreateAuctionRequest entryAuctionDTO){
+    public ResponseEntity<CreateAuctionResult>createAuction(@Valid @RequestBody CreateAuctionRequest entryAuctionDTO){
         CreateAuctionCommand auctionCommand = new CreateAuctionCommand(entryAuctionDTO.getTitle(), entryAuctionDTO.getDescription(), entryAuctionDTO.getStartTime(), entryAuctionDTO.getEndTime(), entryAuctionDTO.getStartingPrice(), entryAuctionDTO.getOwnerId());
         return new ResponseEntity<CreateAuctionResult>(auctionUseCase.createAuction(auctionCommand), HttpStatus.CREATED);
     }

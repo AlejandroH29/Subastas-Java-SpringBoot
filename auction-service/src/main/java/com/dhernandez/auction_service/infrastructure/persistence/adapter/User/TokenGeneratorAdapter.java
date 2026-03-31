@@ -30,7 +30,7 @@ public class TokenGeneratorAdapter implements MadeTokenPasswordPort, SaveTokenVe
     public void saveToken(EmailVerificationToken token) {
         TokenJpaEntity tokenEntity = new TokenJpaEntity(token.getUserId(), token.getToken(), token.getUsed(), token.getExpirationDate(), token.getCreatedAt());
         if(token.getId() != null){
-            tokenEntity.setId(Long.parseLong(token.getId()));
+            tokenEntity.setId(token.getId());
         }
         tokenRepository.save(tokenEntity);
     }

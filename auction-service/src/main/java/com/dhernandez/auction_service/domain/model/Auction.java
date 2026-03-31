@@ -6,7 +6,7 @@ import com.dhernandez.auction_service.domain.exception.ErrorCreatingAuction;
 import com.dhernandez.auction_service.domain.model.Enum.EnumAuction;
 
 public class Auction{
-    private String idAuction;
+    private Long idAuction;
     private String title;
     private String description;
     private LocalDateTime startTime;
@@ -14,10 +14,10 @@ public class Auction{
     private EnumAuction status;
     private Double startingPrice;
     private Double currentPrice;
-    private String ownerId;
-    private String winnerId;
+    private Long ownerId;
+    private Long winnerId;
 
-    public Auction(String title, String description,  LocalDateTime startTime, LocalDateTime endTime, Double startingPrice, String ownerId){
+    public Auction(String title, String description,  LocalDateTime startTime, LocalDateTime endTime, Double startingPrice, Long ownerId){
         if(startingPrice <= 0){
             throw new ErrorCreatingAuction("El precio debe ser superior a 0");
         }
@@ -29,7 +29,7 @@ public class Auction{
             throw new ErrorCreatingAuction("El titulo no puede estar vacio");
         }
 
-        if(ownerId.isBlank() || ownerId == null){
+        if(ownerId == null){
             throw new ErrorCreatingAuction("El creador de la subasta no puede estar vacio");
         }
         
@@ -45,7 +45,7 @@ public class Auction{
         this.winnerId = null;
     }
 
-    public Auction(String idAuction, String title, String description,  LocalDateTime startTime, LocalDateTime endTime, EnumAuction status, Double startingPrice, Double currentPrice, String ownerId, String winnerId){
+    public Auction(Long idAuction, String title, String description,  LocalDateTime startTime, LocalDateTime endTime, EnumAuction status, Double startingPrice, Double currentPrice, Long ownerId, Long winnerId){
         this.idAuction = idAuction;
         this.title = title;
         this.description = description;
@@ -58,7 +58,7 @@ public class Auction{
         this.winnerId = winnerId;
     }
 
-    public String getIdAuction(){
+    public Long getIdAuction(){
         return idAuction;
     }
     public String getTitle(){
@@ -82,10 +82,10 @@ public class Auction{
     public Double getCurrentPrice(){
         return currentPrice;
     }
-    public String getOwnerId(){
+    public Long getOwnerId(){
         return ownerId;
     }
-    public String getWinnerId(){
+    public Long getWinnerId(){
         return winnerId;
     }
 }

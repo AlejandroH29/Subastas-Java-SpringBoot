@@ -22,7 +22,7 @@ public class AuctionPersistanceAdapter implements ExistAuctionByTitlePort, SaveA
     public Auction saveAuction(Auction auction) {
         AuctionJpaEntity auctionEntity = new AuctionJpaEntity(auction.getTitle(), auction.getDescription(), auction.getStartTime(), auction.getEndTime(), auction.getStatus().toString(), auction.getStartingPrice(), auction.getOwnerId());
         AuctionJpaEntity savedAuction = auctionRepository.save(auctionEntity);
-        return new Auction(savedAuction.getIdAuction().toString(), savedAuction.getTitle(), savedAuction.getDescription(), savedAuction.getStartTime(), savedAuction.getEndTime(), EnumAuction.valueOf(savedAuction.getStatus()), savedAuction.getStartingPrice(), savedAuction.getCurrentPrice(), savedAuction.getOwnerId(), savedAuction.getWinnerId());
+        return new Auction(savedAuction.getIdAuction(), savedAuction.getTitle(), savedAuction.getDescription(), savedAuction.getStartTime(), savedAuction.getEndTime(), EnumAuction.valueOf(savedAuction.getStatus()), savedAuction.getStartingPrice(), savedAuction.getCurrentPrice(), savedAuction.getOwnerId(), savedAuction.getWinnerId());
     }
 
     @Override

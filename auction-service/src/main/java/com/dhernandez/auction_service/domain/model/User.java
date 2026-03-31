@@ -4,7 +4,7 @@ import com.dhernandez.auction_service.domain.exception.ErrorCreatingUser;
 import com.dhernandez.auction_service.domain.model.Enum.EnumRoleUser;
 
 public class User {
-    private String idUser;
+    private Long idUser;
     private String email;
     private String userName;
     private String password;
@@ -46,7 +46,7 @@ public class User {
         this.role = EnumRoleUser.USER;
     }
 
-    public User(String idUser, String email, String userName, String password, boolean verified, EnumRoleUser role){
+    public User(Long idUser, String email, String userName, String password, boolean verified, EnumRoleUser role){
         this.idUser = idUser;
         this.email = email;
         this.userName = userName;
@@ -111,7 +111,7 @@ public class User {
         this.password = newPassword;
     }
 
-    public String getIdUser() {
+    public Long getIdUser() {
         return idUser;
     }
 

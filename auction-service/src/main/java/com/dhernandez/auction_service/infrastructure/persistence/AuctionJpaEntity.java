@@ -34,11 +34,11 @@ public class AuctionJpaEntity {
     @Column(name= "currentprice")
     private Double currentPrice;
     @Column(name= "ownerid")
-    private String ownerId;
+    private Long ownerId;
     @Column(name= "winnerid")
-    private String winnerId;
+    private Long winnerId;
 
-    public AuctionJpaEntity(String title, String description,  LocalDateTime startTime, LocalDateTime endTime, String status, Double startingPrice, String ownerId){
+    public AuctionJpaEntity(String title, String description,  LocalDateTime startTime, LocalDateTime endTime, String status, Double startingPrice, Long ownerId){
         this.title = title;
         this.description = description;
         this.startTime = startTime;

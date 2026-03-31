@@ -8,8 +8,8 @@ public class CreateAuctionCommand {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private Double startingPrice;
-    private String ownerId;
-    public CreateAuctionCommand(String title, String description,  LocalDateTime startTime, LocalDateTime endTime, Double startingPrice, String ownerId){
+    private Long ownerId;
+    public CreateAuctionCommand(String title, String description,  LocalDateTime startTime, LocalDateTime endTime, Double startingPrice, Long ownerId){
         this.title = title;
         this.description = description;
         this.startTime = startTime;
@@ -32,7 +32,7 @@ public class CreateAuctionCommand {
     public Double getStartingPrice(){
         return startingPrice;
     }
-    public String getOwnerId(){
+    public Long getOwnerId(){
         return ownerId;
     }
 }

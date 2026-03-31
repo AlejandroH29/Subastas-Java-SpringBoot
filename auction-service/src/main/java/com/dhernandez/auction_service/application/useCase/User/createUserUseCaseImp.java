@@ -17,7 +17,6 @@ import com.dhernandez.auction_service.domain.model.User;
 import org.springframework.transaction.annotation.Transactional;
 
 public class CreateUserUseCaseImp implements CreateUserUseCase{
-
     final SaveUserPort saveUserPort;
     final ExistUserByEmailPort existUserByEmailPort;
     final ExistUserByUserNamePort existUserByUserNamePort;

@@ -24,10 +24,10 @@ public class UserPersistanceAdapter implements ExistUserByEmailPort, ExistUserBy
     public User saveUser(User user) {
         UserJpaEntity userEntity = new UserJpaEntity(user.getEmail(), user.getUserName(), user.getPassword(), user.getVerified(), user.getRole().toString());
         if(user.getIdUser() != null){
-            userEntity.setId(Long.parseLong(user.getIdUser()));
+            userEntity.setId(user.getIdUser());
         }
         UserJpaEntity userSaved = userRepository.save(userEntity);
-        return new User(userSaved.getId().toString(), userSaved.getEmail(), userSaved.getUserName(), userSaved.getPassword(), userSaved.getVerified(), EnumRoleUser.valueOf(userSaved.getRole()));
+        return new User(userSaved.getId(), userSaved.getEmail(), userSaved.getUserName(), userSaved.getPassword(), userSaved.getVerified(), EnumRoleUser.valueOf(userSaved.getRole()));
     }
     
     @Override

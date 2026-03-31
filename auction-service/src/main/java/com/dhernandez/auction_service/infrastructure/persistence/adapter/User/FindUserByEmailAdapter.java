@@ -25,7 +25,7 @@ public class FindUserByEmailAdapter implements FindUserByEmailPort {
         if(user == null){
             throw new ErrorFindingUser("El usuario no se encontro");
         }
-        return new User(user.getId().toString(), user.getEmail(), user.getUserName(), user.getPassword(), user.getVerified(), EnumRoleUser.valueOf(user.getRole()));
+        return new User(user.getId(), user.getEmail(), user.getUserName(), user.getPassword(), user.getVerified(), EnumRoleUser.valueOf(user.getRole()));
     }
 
     public UserJpaEntity findUserJpaEntity(String email){

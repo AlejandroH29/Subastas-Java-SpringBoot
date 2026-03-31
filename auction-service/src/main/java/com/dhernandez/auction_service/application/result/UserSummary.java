@@ -1,31 +1,28 @@
 package com.dhernandez.auction_service.application.result;
 
-public class VerifyEmailResult {
+public class UserSummary {
     private final Long userId;
     private final String email;
     private final String userName;
-    private final boolean verified;
+    private final String role;
 
-    public VerifyEmailResult(Long userId, String email, String userName, boolean verified) {
+    public UserSummary(Long userId,String email,String userName,String role){
         this.userId = userId;
         this.email = email;
         this.userName = userName;
-        this.verified = verified;
+        this.role = role;
     }
 
-    public Long getUserId() {
+    public Long getUserId(){
         return userId;
     }
-
-    public String getEmail() {
+    public String getEmail(){
         return email;
     }
-
-    public String getUserName() {
+    public String getUserName(){
         return userName;
     }
-
-    public boolean getVerified() {
-        return verified;
+    public String getRole(){
+        return role;
     }
 }
