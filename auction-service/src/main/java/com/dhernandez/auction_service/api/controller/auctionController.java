@@ -13,6 +13,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -25,7 +26,8 @@ public class AuctionController {
 
     @PostMapping("/createAuction")
     public ResponseEntity<CreateAuctionResult>createAuction(@Valid @RequestBody CreateAuctionRequest entryAuctionDTO){
-        CreateAuctionCommand auctionCommand = new CreateAuctionCommand(entryAuctionDTO.getTitle(), entryAuctionDTO.getDescription(), entryAuctionDTO.getStartTime(), entryAuctionDTO.getEndTime(), entryAuctionDTO.getStartingPrice(), entryAuctionDTO.getOwnerId());
-        return new ResponseEntity<CreateAuctionResult>(auctionUseCase.createAuction(auctionCommand), HttpStatus.CREATED);
+        CreateAuctionCommand auctionCommand = new CreateAuctionCommand(entryAuctionDTO.getTitle(), entryAuctionDTO.getDescription(), entryAuctionDTO.getStartTime(), entryAuctionDTO.getEndTime(), entryAuctionDTO.getStartingPrice());
+        Long ownerId = (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return new ResponseEntity<CreateAuctionResult>(auctionUseCase.createAuction(auctionCommand, ownerId), HttpStatus.CREATED);
     }
 }

@@ -27,17 +27,12 @@ public class CreateAuctionRequest {
     @Positive(message = "El precio inicial debe ser mayor a 0")
     private Double startingPrice;
 
-    @NotNull(message = "El precio inicial no puede ser nulo")
-    @Positive(message = "El precio inicial debe ser mayor a 0")
-    private Long ownerId;
-
-    public CreateAuctionRequest(String title, String description,  LocalDateTime startTime, LocalDateTime endTime, Double startingPrice, Long ownerId){
+    public CreateAuctionRequest(String title, String description,  LocalDateTime startTime, LocalDateTime endTime, Double startingPrice){
         this.title = title;
         this.description = description;
         this.startTime = startTime;
         this.endTime = endTime;
         this.startingPrice = startingPrice;
-        this.ownerId = ownerId;
     }
     public String getTitle(){
         return title;
@@ -53,8 +48,5 @@ public class CreateAuctionRequest {
     }
     public Double getStartingPrice(){
         return startingPrice;
-    }
-    public Long getOwnerId(){
-        return ownerId;
     }
 }

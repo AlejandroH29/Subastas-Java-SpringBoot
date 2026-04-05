@@ -8,14 +8,12 @@ public class CreateAuctionCommand {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private Double startingPrice;
-    private Long ownerId;
-    public CreateAuctionCommand(String title, String description,  LocalDateTime startTime, LocalDateTime endTime, Double startingPrice, Long ownerId){
+    public CreateAuctionCommand(String title, String description,  LocalDateTime startTime, LocalDateTime endTime, Double startingPrice){
         this.title = title;
         this.description = description;
         this.startTime = startTime;
         this.endTime = endTime;
         this.startingPrice = startingPrice;
-        this.ownerId = ownerId;
     }
     public String getTitle(){
         return title;
@@ -31,8 +29,5 @@ public class CreateAuctionCommand {
     }
     public Double getStartingPrice(){
         return startingPrice;
-    }
-    public Long getOwnerId(){
-        return ownerId;
-    }
+    }   
 }
