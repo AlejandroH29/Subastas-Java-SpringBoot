@@ -27,7 +27,7 @@ public class AuctionController {
     @PostMapping("/createAuction")
     public ResponseEntity<CreateAuctionResult>createAuction(@Valid @RequestBody CreateAuctionRequest entryAuctionDTO){
         CreateAuctionCommand auctionCommand = new CreateAuctionCommand(entryAuctionDTO.getTitle(), entryAuctionDTO.getDescription(), entryAuctionDTO.getStartTime(), entryAuctionDTO.getEndTime(), entryAuctionDTO.getStartingPrice());
-        Long ownerId = (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long ownerId = Long.parseLong((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         return new ResponseEntity<CreateAuctionResult>(auctionUseCase.createAuction(auctionCommand, ownerId), HttpStatus.CREATED);
     }
 }

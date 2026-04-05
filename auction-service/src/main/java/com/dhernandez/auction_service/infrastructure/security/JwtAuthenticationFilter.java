@@ -33,7 +33,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
         try {
             boolean tokenValid = jwtUtil.isTokenValid(jwtToken);
             if(!tokenValid){
-                filterChain.doFilter(request, response);
+                response.setStatus(401);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().write("{ \"error\":  \"Invalid or expired token\"}");
                 return;
             }
             String userId = jwtUtil.extractUserId(jwtToken);
@@ -42,9 +45,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
             SimpleGrantedAuthority roleAuthority = new SimpleGrantedAuthority("ROLE_" + role);
             Authentication authentication = new UsernamePasswordAuthenticationToken(userId, null, Collections.singletonList(roleAuthority));
             SecurityContextHolder.getContext().setAuthentication(authentication);
+            filterChain.doFilter(request, response);
 
         } catch (Exception e) {
-            filterChain.doFilter(request, response);
+            response.setStatus(401);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write("{ \"error\":  \"Invalid or expired token\"}");
+            return;
         }
     }
     
