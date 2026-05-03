@@ -21,9 +21,8 @@ public class CreateAuctionUseCaseImp implements CreateAuctionUseCase{
     @Transactional
     @Override
     public CreateAuctionResult createAuction(CreateAuctionCommand command, Long ownerId) {
-        Auction auction;
         existAuctionPort.existAuction(command.getTitle());
-        auction = new Auction(command.getTitle(), command.getDescription(), command.getStartTime(), command.getEndTime(), command.getStartingPrice(), ownerId);
+        Auction auction = new Auction(command.getTitle(), command.getDescription(), command.getStartTime(), command.getEndTime(), command.getStartingPrice(), ownerId);
         saveAcution.saveAuction(auction);    
         CreateAuctionResult result = new CreateAuctionResult(auction.getIdAuction(), auction.getTitle(), auction.getDescription(), auction.getStatus(), auction.getStartTime(), auction.getEndTime(), auction.getStartingPrice());
         return result;

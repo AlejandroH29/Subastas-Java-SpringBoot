@@ -1,5 +1,6 @@
 package com.dhernandez.auction_service.infrastructure.persistence;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
@@ -30,15 +31,15 @@ public class AuctionJpaEntity {
     private LocalDateTime endTime;
     private String status;
     @Column(name= "startingprice")
-    private Double startingPrice;
+    private BigDecimal startingPrice;
     @Column(name= "currentprice")
-    private Double currentPrice;
+    private BigDecimal currentPrice;
     @Column(name= "ownerid")
     private Long ownerId;
     @Column(name= "winnerid")
     private Long winnerId;
 
-    public AuctionJpaEntity(String title, String description,  LocalDateTime startTime, LocalDateTime endTime, String status, Double startingPrice, Long ownerId){
+    public AuctionJpaEntity(String title, String description,  LocalDateTime startTime, LocalDateTime endTime, String status, BigDecimal startingPrice, Long ownerId){
         this.title = title;
         this.description = description;
         this.startTime = startTime;

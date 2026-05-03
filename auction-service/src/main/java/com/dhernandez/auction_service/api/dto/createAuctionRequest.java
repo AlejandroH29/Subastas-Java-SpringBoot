@@ -1,5 +1,6 @@
 package com.dhernandez.auction_service.api.dto;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import jakarta.validation.constraints.NotBlank;
@@ -25,9 +26,9 @@ public class CreateAuctionRequest {
 
     @NotNull(message = "El precio inicial no puede ser nulo")
     @Positive(message = "El precio inicial debe ser mayor a 0")
-    private Double startingPrice;
+    private BigDecimal startingPrice;
 
-    public CreateAuctionRequest(String title, String description,  LocalDateTime startTime, LocalDateTime endTime, Double startingPrice){
+    public CreateAuctionRequest(String title, String description,  LocalDateTime startTime, LocalDateTime endTime, BigDecimal startingPrice){
         this.title = title;
         this.description = description;
         this.startTime = startTime;
@@ -46,7 +47,7 @@ public class CreateAuctionRequest {
     public LocalDateTime getEndTime(){
         return endTime;
     }
-    public Double getStartingPrice(){
+    public BigDecimal getStartingPrice(){
         return startingPrice;
     }
 }

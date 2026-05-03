@@ -1,5 +1,6 @@
 package com.dhernandez.auction_service.application.result;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import com.dhernandez.auction_service.domain.model.Enum.EnumAuction;
@@ -11,9 +12,9 @@ public class CreateAuctionResult {
     private EnumAuction status;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-    private Double startingPrice;
+    private BigDecimal startingPrice;
 
-    public CreateAuctionResult(Long idAuction, String title, String description, EnumAuction status, LocalDateTime startTime, LocalDateTime endTime, Double startingPrice){
+    public CreateAuctionResult(Long idAuction, String title, String description, EnumAuction status, LocalDateTime startTime, LocalDateTime endTime, BigDecimal startingPrice){
         this.idAuction = idAuction;
         this.title = title;
         this.description = description;
@@ -41,7 +42,7 @@ public class CreateAuctionResult {
     public EnumAuction getStatus(){
         return status;
     }
-    public Double getStartingPrice(){
+    public BigDecimal getStartingPrice(){
         return startingPrice;
     }
         
