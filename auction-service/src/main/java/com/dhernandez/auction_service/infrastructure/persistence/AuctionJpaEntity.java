@@ -3,12 +3,14 @@ package com.dhernandez.auction_service.infrastructure.persistence;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -38,6 +40,8 @@ public class AuctionJpaEntity {
     private Long ownerId;
     @Column(name= "winnerid")
     private Long winnerId;
+    @Version
+    private Long version;
 
     public AuctionJpaEntity(String title, String description,  LocalDateTime startTime, LocalDateTime endTime, String status, BigDecimal startingPrice, Long ownerId){
         this.title = title;

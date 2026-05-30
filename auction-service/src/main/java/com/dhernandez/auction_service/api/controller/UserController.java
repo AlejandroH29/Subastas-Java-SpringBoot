@@ -32,7 +32,7 @@ public class UserController {
     @Autowired CreateUserUseCase createUserUseCase;
     @Autowired VerifyEmailUseCase verifyEmail;
     @Autowired LoginUseCase loginUser;
-
+    
     @PostMapping("/createUser")
     public ResponseEntity<CreateUserResult> createUser(@Valid @RequestBody CreateUserRequest entryUserDTO ){
         CreateUserCommand userCommand = new CreateUserCommand(entryUserDTO.getEmail(), entryUserDTO.getUserName(), entryUserDTO.getPassword());

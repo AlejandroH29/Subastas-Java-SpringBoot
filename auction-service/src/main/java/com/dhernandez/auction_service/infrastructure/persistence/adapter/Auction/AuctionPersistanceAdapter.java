@@ -1,9 +1,14 @@
 package com.dhernandez.auction_service.infrastructure.persistence.adapter.Auction;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import com.dhernandez.auction_service.application.port.out.Auction.ExistAuctionByTitlePort;
 import com.dhernandez.auction_service.application.port.out.Auction.FindAuctionByIdPort;
+import com.dhernandez.auction_service.application.port.out.Auction.FindExpiredAuctionsPort;
 import com.dhernandez.auction_service.application.port.out.Auction.SaveAuctionPort;
 import com.dhernandez.auction_service.domain.exception.ErrorCreatingAuction;
 import com.dhernandez.auction_service.domain.model.Auction;
@@ -12,7 +17,7 @@ import com.dhernandez.auction_service.infrastructure.persistence.AuctionJpaEntit
 import com.dhernandez.auction_service.infrastructure.persistence.repository.AuctionJpaRepository;
 
 @Component 
-public class AuctionPersistanceAdapter implements ExistAuctionByTitlePort, SaveAuctionPort, FindAuctionByIdPort{
+public class AuctionPersistanceAdapter implements ExistAuctionByTitlePort, SaveAuctionPort, FindAuctionByIdPort, FindExpiredAuctionsPort{
 
     private final AuctionJpaRepository auctionRepository;
     public AuctionPersistanceAdapter( AuctionJpaRepository auctionRepository){
@@ -47,6 +52,7 @@ public class AuctionPersistanceAdapter implements ExistAuctionByTitlePort, SaveA
             }
             auctionFound.setCurrentPrice(auction.getCurrentPrice());
             auctionFound.setWinnerId(auction.getWinnerId());
+            auctionFound.setStatus(auction.getStatus().toString());
             AuctionJpaEntity savedAuction = auctionRepository.save(auctionFound);
             return new Auction(savedAuction.getIdAuction(), 
                                 savedAuction.getTitle(), 
@@ -87,6 +93,29 @@ public class AuctionPersistanceAdapter implements ExistAuctionByTitlePort, SaveA
                             auctionFound.getOwnerId(),
                             auctionFound.getWinnerId()
                         );
+    }
+
+    @Override
+    public List<Auction> findExpiredAuctions() {
+        List<Auction> auctions = new ArrayList<>();
+        List<AuctionJpaEntity> auctionsFound = auctionRepository.
+                                                    findByStatusAndEndTimeLessThanEqual(
+                                                        "ACTIVE", 
+                                                        LocalDateTime.now());
+        for(AuctionJpaEntity auction : auctionsFound){
+            Auction auctionDomain = new Auction(auction.getIdAuction(), 
+                                                    auction.getTitle(), 
+                                                    auction.getDescription(), 
+                                                    auction.getStartTime(), 
+                                                    auction.getEndTime(), 
+                                                    EnumAuction.valueOf(auction.getStatus().toString()), 
+                                                    auction.getStartingPrice(), 
+                                                    auction.getCurrentPrice(), 
+                                                    auction.getOwnerId(), 
+                                                    auction.getWinnerId());
+            auctions.add(auctionDomain);
+        }
+        return auctions;
     }
 
     public AuctionJpaEntity findAuctionJpa(Long id){

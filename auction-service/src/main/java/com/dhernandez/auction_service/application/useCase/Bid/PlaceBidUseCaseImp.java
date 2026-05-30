@@ -1,5 +1,6 @@
 package com.dhernandez.auction_service.application.useCase.Bid;
 
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dhernandez.auction_service.application.command.CreateBidCommand;
@@ -7,6 +8,7 @@ import com.dhernandez.auction_service.application.port.out.Auction.FindAuctionBy
 import com.dhernandez.auction_service.application.port.out.Auction.SaveAuctionPort;
 import com.dhernandez.auction_service.application.port.out.Bid.SaveBidPort;
 import com.dhernandez.auction_service.application.result.CreateBidResult;
+import com.dhernandez.auction_service.application.useCase.Exception.FailToPlaceBid;
 import com.dhernandez.auction_service.application.useCase.Exception.NoAuctionFound;
 import com.dhernandez.auction_service.domain.model.Auction;
 import com.dhernandez.auction_service.domain.model.Bid;
@@ -31,7 +33,11 @@ public class PlaceBidUseCaseImp implements PlaceBidUseCase {
         }
         Bid bid = new Bid(bidCommand.getAuctionId(), userId, bidCommand.getAmount());
         auction.placeBid(bid);
-        saveAuction.saveAuction(auction);
+        try {
+            saveAuction.saveAuction(auction);
+        } catch (OptimisticLockingFailureException e) {
+            throw new FailToPlaceBid("La subasta cambio, intente nuevamente");
+        }
         Bid savedBid = saveBid.saveBid(bid);
         return new CreateBidResult(savedBid.getId(), savedBid.getAuctionId(), savedBid.getAmount(), savedBid.getTimeStamp());
     }

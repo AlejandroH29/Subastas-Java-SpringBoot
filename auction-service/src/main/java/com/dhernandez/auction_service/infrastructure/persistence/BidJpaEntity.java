@@ -3,7 +3,7 @@ package com.dhernandez.auction_service.infrastructure.persistence;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import org.springframework.data.annotation.Id;
+import jakarta.persistence.Id;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 
 
 @Entity
-@Table(name = "Bids", schema = "auction_db")
+@Table(name = "Bids", schema = "auctions_db")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

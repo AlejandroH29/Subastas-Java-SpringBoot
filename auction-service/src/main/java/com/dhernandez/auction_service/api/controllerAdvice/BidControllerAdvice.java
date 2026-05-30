@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.dhernandez.auction_service.application.useCase.Exception.FailToPlaceBid;
 import com.dhernandez.auction_service.domain.exception.ErrorCreatingBid;
 import com.dhernandez.auction_service.domain.exception.ErrorPlacingBid;
 
@@ -18,5 +19,10 @@ public class BidControllerAdvice {
     @ExceptionHandler(ErrorPlacingBid.class)
     public ResponseEntity<String>errorPlacingBid(ErrorPlacingBid error){
         return new ResponseEntity<String>(error.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    @ExceptionHandler(FailToPlaceBid.class)
+    public ResponseEntity<String> failToPlaceBid(FailToPlaceBid error){
+        return new ResponseEntity<String>(error.getMessage(), HttpStatus.CONFLICT);
     }
 }
