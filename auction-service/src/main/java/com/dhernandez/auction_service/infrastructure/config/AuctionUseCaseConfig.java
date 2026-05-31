@@ -12,6 +12,8 @@ import com.dhernandez.auction_service.application.useCase.Auction.ActiveAuctionA
 import com.dhernandez.auction_service.application.useCase.Auction.ActiveAuctionAutomaticUseCaseImp;
 import com.dhernandez.auction_service.application.useCase.Auction.ActiveAuctionManualUseCaseImp;
 import com.dhernandez.auction_service.application.useCase.Auction.ActiveAuctionMunualUseCase;
+import com.dhernandez.auction_service.application.useCase.Auction.CloseExpiredAuctionManualUseCase;
+import com.dhernandez.auction_service.application.useCase.Auction.CloseExpiredAuctionManualUseCaseImp;
 import com.dhernandez.auction_service.application.useCase.Auction.CloseExpiredAuctionsUseCase;
 import com.dhernandez.auction_service.application.useCase.Auction.CloseExpiredAuctionsUseCaseImp;
 import com.dhernandez.auction_service.application.useCase.Auction.CreateAuctionUseCase;
@@ -27,6 +29,12 @@ public class AuctionUseCaseConfig {
     public CloseExpiredAuctionsUseCase closeExpiredAuctionsUseCase(FindExpiredAuctionsPort findAuctionsPort, SaveAuctionPort saveAuctions){
         return new CloseExpiredAuctionsUseCaseImp(findAuctionsPort, saveAuctions);
     }
+
+    @Bean
+    public CloseExpiredAuctionManualUseCase closeExpiredAuctionManualUseCase(FindAuctionByIdPort findAuctionById, SaveAuctionPort saveAuction){
+        return new CloseExpiredAuctionManualUseCaseImp(findAuctionById, saveAuction);
+    }
+    
     @Bean
     public ActiveAuctionMunualUseCase activeAuctionUseCase(FindAuctionByIdPort findAuctionById, SaveAuctionPort saveAuction){
         return new ActiveAuctionManualUseCaseImp(findAuctionById, saveAuction);
