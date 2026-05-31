@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.dhernandez.auction_service.application.port.out.Auction.ExistAuctionByTitlePort;
 import com.dhernandez.auction_service.application.port.out.Auction.FindAuctionByIdPort;
+import com.dhernandez.auction_service.application.port.out.Auction.FindAuctionsReadyToActivatePort;
 import com.dhernandez.auction_service.application.port.out.Auction.FindExpiredAuctionsPort;
 import com.dhernandez.auction_service.application.port.out.Auction.SaveAuctionPort;
 import com.dhernandez.auction_service.domain.exception.ErrorCreatingAuction;
@@ -17,7 +18,7 @@ import com.dhernandez.auction_service.infrastructure.persistence.AuctionJpaEntit
 import com.dhernandez.auction_service.infrastructure.persistence.repository.AuctionJpaRepository;
 
 @Component 
-public class AuctionPersistanceAdapter implements ExistAuctionByTitlePort, SaveAuctionPort, FindAuctionByIdPort, FindExpiredAuctionsPort{
+public class AuctionPersistanceAdapter implements ExistAuctionByTitlePort, SaveAuctionPort, FindAuctionByIdPort, FindExpiredAuctionsPort, FindAuctionsReadyToActivatePort{
 
     private final AuctionJpaRepository auctionRepository;
     public AuctionPersistanceAdapter( AuctionJpaRepository auctionRepository){
@@ -121,6 +122,26 @@ public class AuctionPersistanceAdapter implements ExistAuctionByTitlePort, SaveA
     public AuctionJpaEntity findAuctionJpa(Long id){
         AuctionJpaEntity auction = auctionRepository.findById(id).orElse(null);
         return auction;
+    }
+
+    @Override
+    public List<Auction> findAuctiosToActivate() {
+        List<Auction> auctions = new ArrayList<>();
+        List<AuctionJpaEntity> auctionFound = auctionRepository.findAuctionsReadyToActivate(LocalDateTime.now());
+        for(AuctionJpaEntity auction : auctionFound){
+            Auction auctionDomain = new Auction(auction.getIdAuction(), 
+                                                    auction.getTitle(), 
+                                                    auction.getDescription(), 
+                                                    auction.getStartTime(), 
+                                                    auction.getEndTime(), 
+                                                    EnumAuction.valueOf(auction.getStatus().toString()), 
+                                                    auction.getStartingPrice(), 
+                                                    auction.getCurrentPrice(), 
+                                                    auction.getOwnerId(), 
+                                                    auction.getWinnerId());
+            auctions.add(auctionDomain);
+        }
+        return auctions;
     }
     
 }

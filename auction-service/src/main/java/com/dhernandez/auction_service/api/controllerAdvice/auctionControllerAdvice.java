@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.dhernandez.auction_service.application.useCase.Exception.IncorrectUserIdAuction;
 import com.dhernandez.auction_service.application.useCase.Exception.NoAuctionFound;
 import com.dhernandez.auction_service.domain.exception.ErrorActivatingAuction;
 import com.dhernandez.auction_service.domain.exception.ErrorCreatingAuction;
@@ -23,5 +24,10 @@ public class AuctionControllerAdvice {
     @ExceptionHandler(NoAuctionFound.class)
     public ResponseEntity<String>noAuctionFound(NoAuctionFound error){
         return new ResponseEntity<String>(error.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    @ExceptionHandler(IncorrectUserIdAuction.class)
+    public ResponseEntity<String> incorrecUserIdAuction(IncorrectUserIdAuction error){
+        return new ResponseEntity<String>(error.getMessage(), HttpStatus.FORBIDDEN);
     }
 }
