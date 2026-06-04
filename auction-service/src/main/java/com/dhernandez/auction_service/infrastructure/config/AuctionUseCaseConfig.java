@@ -5,8 +5,10 @@ import org.springframework.context.annotation.Configuration;
 
 import com.dhernandez.auction_service.application.port.out.Auction.ExistAuctionByTitlePort;
 import com.dhernandez.auction_service.application.port.out.Auction.FindAuctionByIdPort;
+import com.dhernandez.auction_service.application.port.out.Auction.FindAuctionByStatusPort;
 import com.dhernandez.auction_service.application.port.out.Auction.FindAuctionsReadyToActivatePort;
 import com.dhernandez.auction_service.application.port.out.Auction.FindExpiredAuctionsPort;
+import com.dhernandez.auction_service.application.port.out.Auction.FindMyAuctionsPort;
 import com.dhernandez.auction_service.application.port.out.Auction.SaveAuctionPort;
 import com.dhernandez.auction_service.application.useCase.Auction.ActiveAuctionAutomaticUseCase;
 import com.dhernandez.auction_service.application.useCase.Auction.ActiveAuctionAutomaticUseCaseImp;
@@ -18,6 +20,10 @@ import com.dhernandez.auction_service.application.useCase.Auction.CloseExpiredAu
 import com.dhernandez.auction_service.application.useCase.Auction.CloseExpiredAuctionsUseCaseImp;
 import com.dhernandez.auction_service.application.useCase.Auction.CreateAuctionUseCase;
 import com.dhernandez.auction_service.application.useCase.Auction.CreateAuctionUseCaseImp;
+import com.dhernandez.auction_service.application.useCase.Auction.ListActiveAuctionUseCaseImp;
+import com.dhernandez.auction_service.application.useCase.Auction.ListActiveAuctionsUseCase;
+import com.dhernandez.auction_service.application.useCase.Auction.ListMyAuctionsUseCase;
+import com.dhernandez.auction_service.application.useCase.Auction.ListMyAuctionsUseCaseImp;
 
 @Configuration
 public class AuctionUseCaseConfig {
@@ -43,5 +49,15 @@ public class AuctionUseCaseConfig {
     @Bean
     public ActiveAuctionAutomaticUseCase activeAuctionAutomaticUseCase(FindAuctionsReadyToActivatePort auctionsToActivatePort, SaveAuctionPort saveAuctions){
         return new ActiveAuctionAutomaticUseCaseImp(auctionsToActivatePort, saveAuctions);
+    }
+
+    @Bean
+    public ListActiveAuctionsUseCase listActiveAuctionUseCase(FindAuctionByStatusPort findAuctionByStatusPort){
+        return new ListActiveAuctionUseCaseImp(findAuctionByStatusPort);
+    }
+
+    @Bean 
+    public ListMyAuctionsUseCase listMyAuctionUseCase(FindMyAuctionsPort findMyAuctionsPort){
+        return new ListMyAuctionsUseCaseImp(findMyAuctionsPort);
     }
 }

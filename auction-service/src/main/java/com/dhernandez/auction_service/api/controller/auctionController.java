@@ -10,20 +10,27 @@ import com.dhernandez.auction_service.application.command.ActiveAuctionCommand;
 import com.dhernandez.auction_service.application.command.CloseAuctionCommand;
 import com.dhernandez.auction_service.application.command.CreateAuctionCommand;
 import com.dhernandez.auction_service.application.result.ActiveAuctionResult;
+import com.dhernandez.auction_service.application.result.ActiveAuctionsResult;
 import com.dhernandez.auction_service.application.result.CloseAuctionResult;
 import com.dhernandez.auction_service.application.result.CreateAuctionResult;
+import com.dhernandez.auction_service.application.result.MyAuctionsResult;
 import com.dhernandez.auction_service.application.useCase.Auction.ActiveAuctionMunualUseCase;
 import com.dhernandez.auction_service.application.useCase.Auction.CloseExpiredAuctionManualUseCase;
 import com.dhernandez.auction_service.application.useCase.Auction.CreateAuctionUseCase;
+import com.dhernandez.auction_service.application.useCase.Auction.ListActiveAuctionsUseCase;
+import com.dhernandez.auction_service.application.useCase.Auction.ListMyAuctionsUseCase;
 
 import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("Auction/auction")
@@ -32,10 +39,18 @@ public class AuctionController {
     private final CreateAuctionUseCase auctionUseCase;
     private final ActiveAuctionMunualUseCase activeAuction;
     private final CloseExpiredAuctionManualUseCase closeAuction;
-    public AuctionController(CreateAuctionUseCase auctionUseCase, ActiveAuctionMunualUseCase activeAuction, CloseExpiredAuctionManualUseCase closeAuction){
+    private final ListActiveAuctionsUseCase listActveAuctions;
+    private final ListMyAuctionsUseCase listMyAuctions;
+    public AuctionController(CreateAuctionUseCase auctionUseCase, 
+                                ActiveAuctionMunualUseCase activeAuction, 
+                                CloseExpiredAuctionManualUseCase closeAuction, 
+                                ListActiveAuctionsUseCase listActveAuctions, 
+                                ListMyAuctionsUseCase listMyAuctions){
         this.auctionUseCase = auctionUseCase;
         this.activeAuction = activeAuction;
         this.closeAuction = closeAuction;
+        this.listActveAuctions = listActveAuctions;
+        this.listMyAuctions = listMyAuctions;
     }
 
     @PostMapping("/createAuction")
@@ -57,5 +72,16 @@ public class AuctionController {
         Long userId = Long.parseLong((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         CloseAuctionCommand command = new CloseAuctionCommand(entryDTO.getAuctionId());
         return new ResponseEntity<CloseAuctionResult>(closeAuction.closeAuction(command, userId), HttpStatus.OK);
+    }
+
+    @GetMapping("/activeAuctions")
+    public ResponseEntity<ActiveAuctionsResult> listActiveAuctions(){
+        return new ResponseEntity<ActiveAuctionsResult>(listActveAuctions.listActiveAuctions(), HttpStatus.OK);
+    }
+
+    @GetMapping("/myAuctions")
+    public ResponseEntity<MyAuctionsResult> listMyAuctions(){
+        Long userId = Long.parseLong((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        return new ResponseEntity<MyAuctionsResult>(listMyAuctions.listOfMyAuctions(userId), HttpStatus.OK);
     }
 }

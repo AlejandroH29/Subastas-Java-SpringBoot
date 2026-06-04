@@ -20,4 +20,6 @@ public interface AuctionJpaRepository extends JpaRepository<AuctionJpaEntity, Lo
         AND a.startTime <= :now
     """)
     List<AuctionJpaEntity> findAuctionsReadyToActivate(@Param("now") LocalDateTime now);
+    List<AuctionJpaEntity> findByStatus(String status);
+    List<AuctionJpaEntity> findByOwnerId(Long id);
 }

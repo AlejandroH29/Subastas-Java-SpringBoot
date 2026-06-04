@@ -1,0 +1,66 @@
+package com.dhernandez.auction_service.application.result;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+import com.dhernandez.auction_service.domain.model.Enum.EnumAuction;
+
+public class MyAuctions {
+    private Long idAuction;
+    private String title;
+    private String description;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
+    private EnumAuction status;
+    private BigDecimal startingPrice;
+    private BigDecimal currentPrice;
+    private Long winnerId;
+
+    public MyAuctions(Long idAuction, 
+                            String title, 
+                            String description,  
+                            LocalDateTime startTime, 
+                            LocalDateTime endTime, 
+                            EnumAuction status, 
+                            BigDecimal startingPrice, 
+                            BigDecimal currentPrice, 
+                            Long winnerId){
+        this.idAuction = idAuction;
+        this.title = title;
+        this.description = description;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.status = status;
+        this.startingPrice = startingPrice;
+        this.currentPrice = currentPrice;
+        this.winnerId = winnerId;                             
+    }
+
+    public Long getIdAuction(){
+        return idAuction;
+    }
+    public String getTitle(){
+        return title;
+    }
+    public String getDescription(){
+        return description;
+    }
+    public LocalDateTime getStartTime(){
+        return startTime;
+    }
+    public LocalDateTime getEndTime(){
+        return endTime;
+    }
+    public EnumAuction getStatus(){
+        return status;
+    }
+    public BigDecimal getStartingPrice(){
+        return startingPrice;
+    }
+    public BigDecimal getCurrentPrice(){
+        return currentPrice;
+    }
+    public Long getWinnerId(){
+        return winnerId;
+    }
+}

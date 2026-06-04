@@ -18,7 +18,6 @@ import com.dhernandez.auction_service.application.useCase.User.VerifyEmailUseCas
 
 import jakarta.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,9 +28,14 @@ import org.springframework.web.bind.annotation.PutMapping;
 @RequestMapping("Auction/user")
 public class UserController {
 
-    @Autowired CreateUserUseCase createUserUseCase;
-    @Autowired VerifyEmailUseCase verifyEmail;
-    @Autowired LoginUseCase loginUser;
+    private final CreateUserUseCase createUserUseCase;
+    private final VerifyEmailUseCase verifyEmail;
+    private final LoginUseCase loginUser;
+    public UserController(CreateUserUseCase createUserUseCase, VerifyEmailUseCase verifyEmail, LoginUseCase loginUser){
+        this.createUserUseCase = createUserUseCase;
+        this.verifyEmail = verifyEmail;
+        this.loginUser = loginUser;
+    }
     
     @PostMapping("/createUser")
     public ResponseEntity<CreateUserResult> createUser(@Valid @RequestBody CreateUserRequest entryUserDTO ){

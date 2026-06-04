@@ -8,8 +8,10 @@ import org.springframework.stereotype.Component;
 
 import com.dhernandez.auction_service.application.port.out.Auction.ExistAuctionByTitlePort;
 import com.dhernandez.auction_service.application.port.out.Auction.FindAuctionByIdPort;
+import com.dhernandez.auction_service.application.port.out.Auction.FindAuctionByStatusPort;
 import com.dhernandez.auction_service.application.port.out.Auction.FindAuctionsReadyToActivatePort;
 import com.dhernandez.auction_service.application.port.out.Auction.FindExpiredAuctionsPort;
+import com.dhernandez.auction_service.application.port.out.Auction.FindMyAuctionsPort;
 import com.dhernandez.auction_service.application.port.out.Auction.SaveAuctionPort;
 import com.dhernandez.auction_service.domain.exception.ErrorCreatingAuction;
 import com.dhernandez.auction_service.domain.model.Auction;
@@ -18,7 +20,7 @@ import com.dhernandez.auction_service.infrastructure.persistence.AuctionJpaEntit
 import com.dhernandez.auction_service.infrastructure.persistence.repository.AuctionJpaRepository;
 
 @Component 
-public class AuctionPersistanceAdapter implements ExistAuctionByTitlePort, SaveAuctionPort, FindAuctionByIdPort, FindExpiredAuctionsPort, FindAuctionsReadyToActivatePort{
+public class AuctionPersistanceAdapter implements ExistAuctionByTitlePort, SaveAuctionPort, FindAuctionByIdPort, FindExpiredAuctionsPort, FindAuctionsReadyToActivatePort, FindAuctionByStatusPort, FindMyAuctionsPort{
 
     private final AuctionJpaRepository auctionRepository;
     public AuctionPersistanceAdapter( AuctionJpaRepository auctionRepository){
@@ -143,5 +145,45 @@ public class AuctionPersistanceAdapter implements ExistAuctionByTitlePort, SaveA
         }
         return auctions;
     }
+
+    @Override
+    public List<Auction> findAuctionsByStatus(String status) {
+        List<Auction> activeAuctions = new ArrayList<>();
+        List<AuctionJpaEntity> auctionsFound = auctionRepository.findByStatus(status);
+        for(AuctionJpaEntity auction: auctionsFound){
+            Auction auctionFound = new Auction(auction.getIdAuction(), 
+                                                auction.getTitle(), 
+                                                auction.getDescription(), 
+                                                auction.getStartTime(), 
+                                                auction.getEndTime(), 
+                                                EnumAuction.valueOf(auction.getStatus()), 
+                                                auction.getStartingPrice(), 
+                                                auction.getCurrentPrice(), 
+                                                auction.getOwnerId(), 
+                                                auction.getWinnerId());
+            activeAuctions.add(auctionFound);
+        }
+        return activeAuctions;
+    }
+
+    @Override
+    public List<Auction> findMyAuctions(Long userId) {
+        List<AuctionJpaEntity> auctionsFound = auctionRepository.findByOwnerId(userId);
+        List<Auction> myAuctions = new ArrayList<>();
+        for(AuctionJpaEntity auction : auctionsFound){
+            Auction myAuction = new Auction(auction.getIdAuction(), 
+                                                auction.getTitle(), 
+                                                auction.getDescription(), 
+                                                auction.getStartTime(), 
+                                                auction.getEndTime(), 
+                                                EnumAuction.valueOf(auction.getStatus()), 
+                                                auction.getStartingPrice(), 
+                                                auction.getCurrentPrice(), 
+                                                auction.getOwnerId(), 
+                                                auction.getWinnerId());
+            myAuctions.add(myAuction);
+        }
+        return myAuctions;
+    } 
     
 }
