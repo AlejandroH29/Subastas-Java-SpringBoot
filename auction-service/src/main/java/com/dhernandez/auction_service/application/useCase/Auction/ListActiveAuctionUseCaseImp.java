@@ -3,8 +3,9 @@ package com.dhernandez.auction_service.application.useCase.Auction;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.dhernandez.auction_service.application.pagination.PageRequest;
+import com.dhernandez.auction_service.application.pagination.PageResult;
 import com.dhernandez.auction_service.application.port.out.Auction.FindAuctionByStatusPort;
-import com.dhernandez.auction_service.application.result.ActiveAuctionsResult;
 import com.dhernandez.auction_service.application.result.AuctionStatusActive;
 import com.dhernandez.auction_service.domain.model.Auction;
 
@@ -15,10 +16,10 @@ public class ListActiveAuctionUseCaseImp implements ListActiveAuctionsUseCase {
     }
 
     @Override
-    public ActiveAuctionsResult listActiveAuctions() {
-        List<Auction> activeAuctionsFound = findAuctionByStatusPort.findAuctionsByStatus("ACTIVE");
+    public PageResult<AuctionStatusActive> listActiveAuctions(PageRequest pageRequest) {
+        PageResult<Auction> activeAuctionsFound = findAuctionByStatusPort.findAuctionsByStatus("ACTIVE", pageRequest);
         List<AuctionStatusActive> auctionsActive = new ArrayList<>();
-        for(Auction auction: activeAuctionsFound){
+        for(Auction auction: activeAuctionsFound.getData()){
             AuctionStatusActive auctionActive = new AuctionStatusActive(auction.getIdAuction(), 
                                                                         auction.getTitle(), 
                                                                         auction.getDescription(), 
@@ -28,7 +29,11 @@ public class ListActiveAuctionUseCaseImp implements ListActiveAuctionsUseCase {
                                                                         auction.getEndTime());
             auctionsActive.add(auctionActive);
         }
-        return new ActiveAuctionsResult(auctionsActive);
+        return new PageResult<AuctionStatusActive>(auctionsActive, 
+                                                    activeAuctionsFound.getPage(), 
+                                                    activeAuctionsFound.getPageSize(), 
+                                                    activeAuctionsFound.getTotalItems(), 
+                                                    activeAuctionsFound.getTotalPages());
     }
     
 }

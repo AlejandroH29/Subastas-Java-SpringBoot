@@ -1,20 +1,25 @@
 package com.dhernandez.auction_service.api.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dhernandez.auction_service.api.dto.ActiveAuctionRequest;
 import com.dhernandez.auction_service.api.dto.CloseAuctionRequest;
 import com.dhernandez.auction_service.api.dto.CreateAuctionRequest;
+import com.dhernandez.auction_service.api.exception.InvalidPageException;
+import com.dhernandez.auction_service.api.exception.InvalidPaginationException;
 import com.dhernandez.auction_service.application.command.ActiveAuctionCommand;
 import com.dhernandez.auction_service.application.command.CloseAuctionCommand;
 import com.dhernandez.auction_service.application.command.CreateAuctionCommand;
+import com.dhernandez.auction_service.application.pagination.PageRequest;
+import com.dhernandez.auction_service.application.pagination.PageResult;
 import com.dhernandez.auction_service.application.result.ActiveAuctionResult;
-import com.dhernandez.auction_service.application.result.ActiveAuctionsResult;
 import com.dhernandez.auction_service.application.result.AuctionInfoResult;
+import com.dhernandez.auction_service.application.result.AuctionStatusActive;
 import com.dhernandez.auction_service.application.result.CloseAuctionResult;
 import com.dhernandez.auction_service.application.result.CreateAuctionResult;
-import com.dhernandez.auction_service.application.result.MyAuctionsResult;
+import com.dhernandez.auction_service.application.result.MyAuctions;
 import com.dhernandez.auction_service.application.useCase.Auction.ActiveAuctionMunualUseCase;
 import com.dhernandez.auction_service.application.useCase.Auction.CloseExpiredAuctionManualUseCase;
 import com.dhernandez.auction_service.application.useCase.Auction.CreateAuctionUseCase;
@@ -36,7 +41,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 @RestController
 @RequestMapping("Auction/auction")
 public class AuctionController {
-
+    
     private final CreateAuctionUseCase auctionUseCase;
     private final ActiveAuctionMunualUseCase activeAuction;
     private final CloseExpiredAuctionManualUseCase closeAuction;
@@ -79,14 +84,30 @@ public class AuctionController {
     }
 
     @GetMapping("/activeAuctions")
-    public ResponseEntity<ActiveAuctionsResult> listActiveAuctions(){
-        return new ResponseEntity<ActiveAuctionsResult>(listActveAuctions.listActiveAuctions(), HttpStatus.OK);
+    public ResponseEntity<PageResult<AuctionStatusActive>> listActiveAuctions(@RequestParam(defaultValue = "0") int page, 
+                                                                                @RequestParam(defaultValue = "10") int size){
+        if(page < 0 ){
+            throw new InvalidPageException("page debe ser >= 0 ");
+        }
+        if(size <= 0 || size > 50){
+            throw new InvalidPaginationException("size debe de ser >= 1 y <= 50");
+        }
+        return new ResponseEntity<PageResult<AuctionStatusActive>>(listActveAuctions.listActiveAuctions(new PageRequest(page, size)),                                                                                     HttpStatus.OK);
     }
 
     @GetMapping("/myAuctions")
-    public ResponseEntity<MyAuctionsResult> listMyAuctions(){
+    public ResponseEntity<PageResult<MyAuctions>> listMyAuctions(@RequestParam(defaultValue = "0") int page, 
+                                                                    @RequestParam(defaultValue = "10") int size){
         Long userId = Long.parseLong((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-        return new ResponseEntity<MyAuctionsResult>(listMyAuctions.listOfMyAuctions(userId), HttpStatus.OK);
+        if(page < 0 ){
+            throw new InvalidPageException("page debe ser >= 0 ");
+        }
+        if(size <= 0 || size > 50){
+            throw new InvalidPaginationException("size debe de ser >= 1 y <= 50");
+        }
+        return new ResponseEntity<PageResult<MyAuctions>>(listMyAuctions.listOfMyAuctions(
+                                                                userId, new PageRequest(page, size)), 
+                                                                HttpStatus.OK);
     }
 
     @GetMapping("/{auctionId}")

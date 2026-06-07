@@ -4,8 +4,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
+import com.dhernandez.auction_service.application.pagination.PageRequest;
+import com.dhernandez.auction_service.application.pagination.PageResult;
 import com.dhernandez.auction_service.application.port.out.Auction.ExistAuctionByTitlePort;
 import com.dhernandez.auction_service.application.port.out.Auction.FindAuctionByIdPort;
 import com.dhernandez.auction_service.application.port.out.Auction.FindAuctionByStatusPort;
@@ -147,10 +152,14 @@ public class AuctionPersistanceAdapter implements ExistAuctionByTitlePort, SaveA
     }
 
     @Override
-    public List<Auction> findAuctionsByStatus(String status) {
+    public PageResult<Auction> findAuctionsByStatus(String status, PageRequest pageRequest) {
+        Pageable pageable = org.springframework.data.domain.PageRequest.of(pageRequest.getPage(),
+                                                                            pageRequest.getSize(), 
+                                                                            Sort.by("endTime").ascending()
+                                                                                    .and(Sort.by("idAuction").ascending()));
         List<Auction> activeAuctions = new ArrayList<>();
-        List<AuctionJpaEntity> auctionsFound = auctionRepository.findByStatus(status);
-        for(AuctionJpaEntity auction: auctionsFound){
+        Page<AuctionJpaEntity> pagination = auctionRepository.findByStatus(status, pageable);
+        for(AuctionJpaEntity auction: pagination.getContent()){
             Auction auctionFound = new Auction(auction.getIdAuction(), 
                                                 auction.getTitle(), 
                                                 auction.getDescription(), 
@@ -163,14 +172,22 @@ public class AuctionPersistanceAdapter implements ExistAuctionByTitlePort, SaveA
                                                 auction.getWinnerId());
             activeAuctions.add(auctionFound);
         }
-        return activeAuctions;
+        return new PageResult<Auction>(activeAuctions, 
+                                        pagination.getNumber(), 
+                                        pagination.getSize(), 
+                                        (int) pagination.getTotalElements(), 
+                                        pagination.getTotalPages());
     }
 
     @Override
-    public List<Auction> findMyAuctions(Long userId) {
-        List<AuctionJpaEntity> auctionsFound = auctionRepository.findByOwnerId(userId);
+    public PageResult<Auction> findMyAuctions(Long userId, PageRequest pageRequest) {
+        Pageable pageable = org.springframework.data.domain.PageRequest.of(pageRequest.getPage(), 
+                                                                            pageRequest.getSize(),
+                                                                            Sort.by("startTime").descending()
+                                                                                    .and(Sort.by("idAuction").descending()));
+        Page<AuctionJpaEntity> pagination = auctionRepository.findByOwnerId(userId, pageable);
         List<Auction> myAuctions = new ArrayList<>();
-        for(AuctionJpaEntity auction : auctionsFound){
+        for(AuctionJpaEntity auction : pagination.getContent()){
             Auction myAuction = new Auction(auction.getIdAuction(), 
                                                 auction.getTitle(), 
                                                 auction.getDescription(), 
@@ -183,7 +200,7 @@ public class AuctionPersistanceAdapter implements ExistAuctionByTitlePort, SaveA
                                                 auction.getWinnerId());
             myAuctions.add(myAuction);
         }
-        return myAuctions;
+        return new PageResult<Auction>(myAuctions, pagination.getNumber(), pagination.getSize(), (int) pagination.getTotalElements(), pagination.getTotalPages());
     } 
     
 }

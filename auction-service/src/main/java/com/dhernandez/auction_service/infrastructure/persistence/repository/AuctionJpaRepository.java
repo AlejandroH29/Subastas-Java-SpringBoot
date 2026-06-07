@@ -3,6 +3,8 @@ package com.dhernandez.auction_service.infrastructure.persistence.repository;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,6 +22,6 @@ public interface AuctionJpaRepository extends JpaRepository<AuctionJpaEntity, Lo
         AND a.startTime <= :now
     """)
     List<AuctionJpaEntity> findAuctionsReadyToActivate(@Param("now") LocalDateTime now);
-    List<AuctionJpaEntity> findByStatus(String status);
-    List<AuctionJpaEntity> findByOwnerId(Long id);
+    Page<AuctionJpaEntity> findByStatus(String status, Pageable pageable);
+    Page<AuctionJpaEntity> findByOwnerId(Long id, Pageable pageable);
 }

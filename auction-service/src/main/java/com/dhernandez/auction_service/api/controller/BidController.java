@@ -8,11 +8,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dhernandez.auction_service.api.dto.CreateBidRequest;
+import com.dhernandez.auction_service.api.exception.InvalidPageException;
+import com.dhernandez.auction_service.api.exception.InvalidPaginationException;
 import com.dhernandez.auction_service.application.command.CreateBidCommand;
-import com.dhernandez.auction_service.application.result.BidsHistoryResult;
+import com.dhernandez.auction_service.application.pagination.PageRequest;
+import com.dhernandez.auction_service.application.pagination.PageResult;
+import com.dhernandez.auction_service.application.result.BidData;
 import com.dhernandez.auction_service.application.result.CreateBidResult;
 import com.dhernandez.auction_service.application.useCase.Bid.FindBidsHistoryUseCase;
 import com.dhernandez.auction_service.application.useCase.Bid.PlaceBidUseCase;
@@ -35,7 +40,16 @@ public class BidController {
         return new ResponseEntity<CreateBidResult>(placeBidUseCase.placeBid(command, userId), HttpStatus.ACCEPTED);
     }
     @GetMapping("/{auctionId}")
-    public ResponseEntity<BidsHistoryResult> findBidsHistory(@PathVariable Long auctionId){
-        return new ResponseEntity<BidsHistoryResult>(findBidsHistory.findBidsHistory(auctionId), HttpStatus.OK);
+    public ResponseEntity<PageResult<BidData>>findBidsHistory(@PathVariable Long auctionId, 
+                                                                @RequestParam(defaultValue = "0") int page, 
+                                                                @RequestParam(defaultValue = "10") int size){
+        if(page < 0 ){
+            throw new InvalidPageException("page debe ser >= 0 ");
+        }
+        if(size <= 0 || size > 50){
+            throw new InvalidPaginationException("size debe de ser >= 1 y <= 50");
+        }
+        return new ResponseEntity<PageResult<BidData>>(findBidsHistory.findBidsHistory(auctionId, new PageRequest(page, size)), 
+                                                            HttpStatus.OK);    
     }
 }
