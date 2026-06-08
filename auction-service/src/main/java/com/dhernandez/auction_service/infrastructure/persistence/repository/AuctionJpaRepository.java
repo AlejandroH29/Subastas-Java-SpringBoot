@@ -1,7 +1,6 @@
 package com.dhernandez.auction_service.infrastructure.persistence.repository;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,14 +13,14 @@ import com.dhernandez.auction_service.infrastructure.persistence.AuctionJpaEntit
 public interface AuctionJpaRepository extends JpaRepository<AuctionJpaEntity, Long>{
     boolean existsById(Long id);
     boolean existsByTitle(String title);
-    List<AuctionJpaEntity> findByStatusAndEndTimeLessThanEqual(String status, LocalDateTime now);
+    Page<AuctionJpaEntity> findByStatusAndEndTimeLessThanEqual(String status, LocalDateTime now, Pageable pageable);
     @Query("""
         SELECT a 
         FROM AuctionJpaEntity a 
         WHERE a.status = 'CREATED' 
         AND a.startTime <= :now
     """)
-    List<AuctionJpaEntity> findAuctionsReadyToActivate(@Param("now") LocalDateTime now);
+    Page<AuctionJpaEntity> findAuctionsReadyToActivate(@Param("now") LocalDateTime now, Pageable pageable);
     Page<AuctionJpaEntity> findByStatus(String status, Pageable pageable);
     Page<AuctionJpaEntity> findByOwnerId(Long id, Pageable pageable);
 }

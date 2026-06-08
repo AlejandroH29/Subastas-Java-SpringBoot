@@ -1,8 +1,7 @@
 package com.dhernandez.auction_service.application.useCase.Auction;
 
-
-import java.util.List;
-
+import com.dhernandez.auction_service.application.pagination.PageRequest;
+import com.dhernandez.auction_service.application.pagination.PageResult;
 import com.dhernandez.auction_service.application.port.out.Auction.FindExpiredAuctionsPort;
 import com.dhernandez.auction_service.application.port.out.Auction.SaveAuctionPort;
 import com.dhernandez.auction_service.domain.model.Auction;
@@ -19,14 +18,20 @@ public class CloseExpiredAuctionsUseCaseImp implements CloseExpiredAuctionsUseCa
 
     @Override
     public void closeExpiredAuctions() {
-        List<Auction> expiredAuctions = findAuctionsPort.findExpiredAuctions();
-        for(Auction auction : expiredAuctions){
-            try {
-                auction.closeAuction();
-                saveAuctions.saveAuction(auction);
-            } catch (RuntimeException e) {
-                System.err.println("No se pudo cerrar la subasta con id: " + auction.getIdAuction() + ", Error: " + e.getMessage());
-            }
+        while(true){
+            PageResult<Auction> expiredAuctions = findAuctionsPort.findExpiredAuctions(new PageRequest(0, 50));
+            if(expiredAuctions.getData().isEmpty()){
+                break;
+            }else{
+                for(Auction auction: expiredAuctions.getData()){
+                    try {
+                        auction.closeAuction();
+                        saveAuctions.saveAuction(auction);
+                    } catch (RuntimeException e) {
+                        System.err.println("No se pudo activar la subasta con id: " + auction.getIdAuction() + ", Error: " + e.getMessage());                
+                    }
+                }
+            }   
         }
     }
     

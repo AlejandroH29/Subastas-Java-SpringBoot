@@ -104,13 +104,19 @@ public class AuctionPersistanceAdapter implements ExistAuctionByTitlePort, SaveA
     }
 
     @Override
-    public List<Auction> findExpiredAuctions() {
+    public PageResult<Auction> findExpiredAuctions(PageRequest pageRequest) {
+        Pageable pageable = org.springframework.data.domain.PageRequest.of(pageRequest.getPage(), 
+                                                                            pageRequest.getSize(),
+                                                                            Sort.by("endTime").ascending()
+                                                                                .and(Sort.by("idAuction").ascending()));
         List<Auction> auctions = new ArrayList<>();
-        List<AuctionJpaEntity> auctionsFound = auctionRepository.
+        Page<AuctionJpaEntity> auctionsFound = auctionRepository.
                                                     findByStatusAndEndTimeLessThanEqual(
                                                         "ACTIVE", 
-                                                        LocalDateTime.now());
-        for(AuctionJpaEntity auction : auctionsFound){
+                                                        LocalDateTime.now(),
+                                                        pageable);
+                                                        
+        for(AuctionJpaEntity auction : auctionsFound.getContent()){
             Auction auctionDomain = new Auction(auction.getIdAuction(), 
                                                     auction.getTitle(), 
                                                     auction.getDescription(), 
@@ -123,7 +129,11 @@ public class AuctionPersistanceAdapter implements ExistAuctionByTitlePort, SaveA
                                                     auction.getWinnerId());
             auctions.add(auctionDomain);
         }
-        return auctions;
+        return new PageResult<Auction>(auctions, 
+                                        auctionsFound.getNumber(), 
+                                        auctionsFound.getSize(), 
+                                        (int) auctionsFound.getTotalElements(), 
+                                        auctionsFound.getTotalPages());
     }
 
     public AuctionJpaEntity findAuctionJpa(Long id){
@@ -132,10 +142,14 @@ public class AuctionPersistanceAdapter implements ExistAuctionByTitlePort, SaveA
     }
 
     @Override
-    public List<Auction> findAuctiosToActivate() {
+    public PageResult<Auction> findAuctiosToActivate(PageRequest pageRequest) {
+        Pageable pageable = org.springframework.data.domain.PageRequest.of(pageRequest.getPage(), 
+                                                                            pageRequest.getSize(),
+                                                                            Sort.by("startTime").ascending()
+                                                                                .and(Sort.by("idAuction").ascending()));
         List<Auction> auctions = new ArrayList<>();
-        List<AuctionJpaEntity> auctionFound = auctionRepository.findAuctionsReadyToActivate(LocalDateTime.now());
-        for(AuctionJpaEntity auction : auctionFound){
+        Page<AuctionJpaEntity> pagination = auctionRepository.findAuctionsReadyToActivate(LocalDateTime.now(), pageable);
+        for(AuctionJpaEntity auction : pagination.getContent()){
             Auction auctionDomain = new Auction(auction.getIdAuction(), 
                                                     auction.getTitle(), 
                                                     auction.getDescription(), 
@@ -148,7 +162,11 @@ public class AuctionPersistanceAdapter implements ExistAuctionByTitlePort, SaveA
                                                     auction.getWinnerId());
             auctions.add(auctionDomain);
         }
-        return auctions;
+        return new PageResult<Auction>(auctions, 
+                                        pagination.getNumber(), 
+                                        pagination.getSize(), 
+                                        (int) pagination.getTotalElements(), 
+                                        pagination.getTotalPages());
     }
 
     @Override
@@ -156,7 +174,7 @@ public class AuctionPersistanceAdapter implements ExistAuctionByTitlePort, SaveA
         Pageable pageable = org.springframework.data.domain.PageRequest.of(pageRequest.getPage(),
                                                                             pageRequest.getSize(), 
                                                                             Sort.by("endTime").ascending()
-                                                                                    .and(Sort.by("idAuction").ascending()));
+                                                                                .and(Sort.by("idAuction").ascending()));
         List<Auction> activeAuctions = new ArrayList<>();
         Page<AuctionJpaEntity> pagination = auctionRepository.findByStatus(status, pageable);
         for(AuctionJpaEntity auction: pagination.getContent()){
@@ -184,7 +202,7 @@ public class AuctionPersistanceAdapter implements ExistAuctionByTitlePort, SaveA
         Pageable pageable = org.springframework.data.domain.PageRequest.of(pageRequest.getPage(), 
                                                                             pageRequest.getSize(),
                                                                             Sort.by("startTime").descending()
-                                                                                    .and(Sort.by("idAuction").descending()));
+                                                                                .and(Sort.by("idAuction").descending()));
         Page<AuctionJpaEntity> pagination = auctionRepository.findByOwnerId(userId, pageable);
         List<Auction> myAuctions = new ArrayList<>();
         for(AuctionJpaEntity auction : pagination.getContent()){
