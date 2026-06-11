@@ -14,6 +14,7 @@ public class AuctionInfoResult {
     private EnumAuction status;
     private BigDecimal startingPrice;
     private BigDecimal currentPrice;
+    private Long winnerId;
 
     public AuctionInfoResult(Long auctionId,
                                 String title,
@@ -22,7 +23,8 @@ public class AuctionInfoResult {
                                 LocalDateTime endTime,
                                 EnumAuction status,
                                 BigDecimal startingPrice,
-                                BigDecimal currentPrice) {
+                                BigDecimal currentPrice,
+                                Long winnerId) {
         this.auctionId = auctionId;
         this.title = title;
         this.description = description;
@@ -31,6 +33,7 @@ public class AuctionInfoResult {
         this.status = status;
         this.startingPrice = startingPrice;
         this.currentPrice = currentPrice;
+        this.winnerId = winnerId;
     }
 
     public Long getAuctionId() {
@@ -56,5 +59,8 @@ public class AuctionInfoResult {
     }
     public BigDecimal getCurrentPrice() {
         return currentPrice;
+    }
+    public Long getWinnerId(){
+        return winnerId;
     }
 }

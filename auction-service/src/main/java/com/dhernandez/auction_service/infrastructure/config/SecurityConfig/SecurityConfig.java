@@ -1,4 +1,4 @@
-package com.dhernandez.auction_service.infrastructure.config;
+package com.dhernandez.auction_service.infrastructure.config.SecurityConfig;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +21,7 @@ public class SecurityConfig {
                 .requestMatchers("/Auction/user/createUser").permitAll()
                 .requestMatchers("/Auction/user/verifyEmail").permitAll()
                 .requestMatchers("/Auction/user/login").permitAll()
+                .requestMatchers("/ws/**").permitAll()
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

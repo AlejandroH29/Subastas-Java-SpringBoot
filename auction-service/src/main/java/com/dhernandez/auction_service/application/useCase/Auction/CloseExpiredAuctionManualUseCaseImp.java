@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.dhernandez.auction_service.application.command.CloseAuctionCommand;
 import com.dhernandez.auction_service.application.port.out.Auction.FindAuctionByIdPort;
 import com.dhernandez.auction_service.application.port.out.Auction.SaveAuctionPort;
+import com.dhernandez.auction_service.application.port.out.EventPublisher.EventPublisherPort;
 import com.dhernandez.auction_service.application.result.CloseAuctionResult;
 import com.dhernandez.auction_service.application.useCase.Exception.IncorrectUserIdAuction;
 import com.dhernandez.auction_service.application.useCase.Exception.NoAuctionFound;
@@ -13,9 +14,11 @@ import com.dhernandez.auction_service.domain.model.Auction;
 public class CloseExpiredAuctionManualUseCaseImp implements CloseExpiredAuctionManualUseCase{
     private final FindAuctionByIdPort findAuctionById;
     private final SaveAuctionPort saveAuction;
-    public CloseExpiredAuctionManualUseCaseImp(FindAuctionByIdPort findAuctionById, SaveAuctionPort saveAuction){
+    private final EventPublisherPort eventPublisherPort;
+    public CloseExpiredAuctionManualUseCaseImp(FindAuctionByIdPort findAuctionById, SaveAuctionPort saveAuction, EventPublisherPort eventPublisherPort){
         this.findAuctionById = findAuctionById;
         this.saveAuction = saveAuction;
+        this.eventPublisherPort = eventPublisherPort;
     }
 
     @Transactional
@@ -30,6 +33,8 @@ public class CloseExpiredAuctionManualUseCaseImp implements CloseExpiredAuctionM
             }
             auctionFound.closeAuction();
             saveAuction.saveAuction(auctionFound);
+            eventPublisherPort.publish(auctionFound.getDomainEvents());
+            auctionFound.clearEvents();
             return new CloseAuctionResult(auctionFound.getTitle(), auctionFound.getDescription(), auctionFound.getStartTime(), auctionFound.getEndTime(), auctionFound.getStatus(), auctionFound.getStartingPrice());
         }
     }

@@ -25,7 +25,8 @@ public class GetAuctionInfoUseCaseImp implements GetAuctionInfoUseCase{
                                             auctionFound.getEndTime(), 
                                             auctionFound.getStatus(), 
                                             auctionFound.getStartingPrice(), 
-                                            auctionFound.getCurrentPrice());
+                                            auctionFound.getCurrentPrice(),
+                                            auctionFound.getWinnerId());
         }
     }
     

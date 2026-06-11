@@ -2,11 +2,17 @@ package com.dhernandez.auction_service.domain.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
+import com.dhernandez.auction_service.domain.event.AuctionClosed;
+import com.dhernandez.auction_service.domain.event.BidPlaced;
 import com.dhernandez.auction_service.domain.exception.ErrorActivatingAuction;
 import com.dhernandez.auction_service.domain.exception.ErrorCreatingAuction;
 import com.dhernandez.auction_service.domain.exception.ErrorPlacingBid;
 import com.dhernandez.auction_service.domain.model.Enum.EnumAuction;
+import com.dhernandez.auction_service.domain.event.DomainEvent;
 
 public class Auction{
     private Long idAuction;
@@ -19,6 +25,7 @@ public class Auction{
     private BigDecimal currentPrice;
     private Long ownerId;
     private Long winnerId;
+    private final List<DomainEvent> domainEvents = new ArrayList<>();
 
     public Auction(String title, String description,  LocalDateTime startTime, LocalDateTime endTime, BigDecimal startingPrice, Long ownerId){
         if(startingPrice == null || startingPrice.compareTo(BigDecimal.ZERO) <= 0){
@@ -97,6 +104,7 @@ public class Auction{
     public void closeAuction(){
         if(!this.status.equals(EnumAuction.CLOSED)){
                 this.status = EnumAuction.CLOSED;
+                addEvent(new AuctionClosed(this.idAuction, LocalDateTime.now(), this.winnerId, this.currentPrice));
         }else{
             throw new ErrorActivatingAuction("No se puede cerrar esta subasta, ya esta cerrada");
         }
@@ -117,6 +125,18 @@ public class Auction{
         }
         this.currentPrice = bid.getAmount();
         this.winnerId = bid.getUserId();
+        addEvent(new BidPlaced(this.idAuction,
+                                bid.getId(), 
+                                bid.getUserId(), 
+                                this.currentPrice, 
+                                bid.getTimeStamp()));
+    }
+
+    public void addEvent(DomainEvent domainEvent){
+        domainEvents.add(domainEvent);
+    }
+    public void clearEvents(){
+        domainEvents.clear();
     }
 
     public Long getIdAuction(){
@@ -148,6 +168,9 @@ public class Auction{
     }
     public Long getWinnerId(){
         return winnerId;
+    }
+    public List<DomainEvent> getDomainEvents(){
+        return Collections.unmodifiableList(domainEvents);
     }
 }
     

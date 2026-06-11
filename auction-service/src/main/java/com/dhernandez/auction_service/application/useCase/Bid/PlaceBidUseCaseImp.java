@@ -7,6 +7,7 @@ import com.dhernandez.auction_service.application.command.CreateBidCommand;
 import com.dhernandez.auction_service.application.port.out.Auction.FindAuctionByIdPort;
 import com.dhernandez.auction_service.application.port.out.Auction.SaveAuctionPort;
 import com.dhernandez.auction_service.application.port.out.Bid.SaveBidPort;
+import com.dhernandez.auction_service.application.port.out.EventPublisher.EventPublisherPort;
 import com.dhernandez.auction_service.application.result.CreateBidResult;
 import com.dhernandez.auction_service.application.useCase.Exception.FailToPlaceBid;
 import com.dhernandez.auction_service.application.useCase.Exception.NoAuctionFound;
@@ -17,11 +18,13 @@ public class PlaceBidUseCaseImp implements PlaceBidUseCase {
     private SaveAuctionPort saveAuction;
     private SaveBidPort saveBid;
     private FindAuctionByIdPort findAuctionById;
+    private EventPublisherPort eventPublisherPort;
 
-    public PlaceBidUseCaseImp(SaveAuctionPort saveAuction,SaveBidPort saveBid,FindAuctionByIdPort findAuctionById){
+    public PlaceBidUseCaseImp(SaveAuctionPort saveAuction,SaveBidPort saveBid,FindAuctionByIdPort findAuctionById, EventPublisherPort eventPublisherPort){
         this.saveAuction = saveAuction;
         this.saveBid = saveBid;
         this.findAuctionById = findAuctionById;
+        this.eventPublisherPort = eventPublisherPort;
     }
 
     @Override
@@ -39,6 +42,8 @@ public class PlaceBidUseCaseImp implements PlaceBidUseCase {
             throw new FailToPlaceBid("La subasta cambio, intente nuevamente");
         }
         Bid savedBid = saveBid.saveBid(bid);
+        eventPublisherPort.publish(auction.getDomainEvents());
+        auction.clearEvents();
         return new CreateBidResult(savedBid.getId(), savedBid.getAuctionId(), savedBid.getAmount(), savedBid.getTimeStamp());
     }
     
