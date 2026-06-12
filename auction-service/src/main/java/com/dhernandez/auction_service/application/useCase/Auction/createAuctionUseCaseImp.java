@@ -23,8 +23,14 @@ public class CreateAuctionUseCaseImp implements CreateAuctionUseCase{
     public CreateAuctionResult createAuction(CreateAuctionCommand command, Long ownerId) {
         existAuctionPort.existAuction(command.getTitle());
         Auction auction = new Auction(command.getTitle(), command.getDescription(), command.getStartTime(), command.getEndTime(), command.getStartingPrice(), ownerId);
-        saveAcution.saveAuction(auction);    
-        CreateAuctionResult result = new CreateAuctionResult(auction.getIdAuction(), auction.getTitle(), auction.getDescription(), auction.getStatus(), auction.getStartTime(), auction.getEndTime(), auction.getStartingPrice());
+        Auction auctionSaved = saveAcution.saveAuction(auction);    
+        CreateAuctionResult result = new CreateAuctionResult(auctionSaved.getIdAuction(), 
+                                                                auctionSaved.getTitle(), 
+                                                                auctionSaved.getDescription(), 
+                                                                auctionSaved.getStatus(), 
+                                                                auctionSaved.getStartTime(), 
+                                                                auctionSaved.getEndTime(), 
+                                                                auctionSaved.getStartingPrice());
         return result;
     }
 
