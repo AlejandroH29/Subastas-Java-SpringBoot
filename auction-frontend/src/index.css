@@ -1,0 +1,222 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-obsidian-950 text-white font-body;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-obsidian-900;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gold-600 rounded-full;
+  }
+  .text-obsidian-400 { color: #a0a0c0 !important; }
+  .text-obsidian-500 { color: #8080a8 !important; }
+
+}
+
+@layer components {
+  .btn-gold {
+    @apply bg-gold-gradient text-obsidian-950 font-semibold px-6 py-3 rounded-lg 
+           cursor-pointer transition-all duration-200 
+           hover:brightness-110 hover:shadow-lg hover:shadow-gold-500/30
+           active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.05em;
+  }
+
+  .btn-outline-gold {
+    @apply border border-gold-500 text-gold-400 font-semibold px-6 py-3 rounded-lg
+           cursor-pointer transition-all duration-200 bg-transparent
+           hover:bg-gold-500/10 hover:border-gold-300 hover:text-gold-300
+           active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-ghost {
+    @apply text-obsidian-300 font-medium px-4 py-2 rounded-lg cursor-pointer
+           transition-all duration-200 hover:text-white hover:bg-obsidian-700
+           active:scale-95;
+  }
+
+  .card {
+    @apply bg-obsidian-800/60 border border-obsidian-600/40 rounded-xl backdrop-blur-sm;
+  }
+
+  .card-gold {
+    @apply bg-obsidian-800/80 border border-gold-600/30 rounded-xl backdrop-blur-sm
+           hover:border-gold-500/60 transition-all duration-300;
+  }
+
+  .input-field {
+    @apply w-full bg-obsidian-800/80 border border-obsidian-600/60 rounded-lg px-4 py-3
+           text-white placeholder-obsidian-400 font-body text-sm
+           focus:outline-none focus:border-gold-500/80 focus:ring-1 focus:ring-gold-500/30
+           transition-all duration-200;
+  }
+
+  .gold-text {
+    background: linear-gradient(135deg, #D4A017, #F5D05A, #D4A017);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .section-label {
+    @apply text-xs font-mono text-gold-400/80 tracking-widest uppercase mb-1;
+  }
+
+  .page-container {
+    @apply min-h-screen bg-obsidian-950;
+  }
+
+  .status-badge {
+    @apply text-xs font-mono font-semibold px-2.5 py-1 rounded-full tracking-wider uppercase;
+  }
+
+  .status-active {
+    @apply status-badge bg-emerald-500/15 text-emerald-400 border border-emerald-500/30;
+  }
+
+  .status-created {
+    @apply status-badge bg-gold-500/15 text-gold-400 border border-gold-500/30;
+  }
+
+  .status-closed {
+    @apply status-badge bg-obsidian-600/40 text-obsidian-300 border border-obsidian-500/30;
+  }
+}
+
+@layer utilities {
+  .text-shadow-gold {
+    text-shadow: 0 0 30px rgba(212, 160, 23, 0.5);
+  }
+
+  .glow-gold {
+    box-shadow: 0 0 30px rgba(212, 160, 23, 0.3), 0 0 60px rgba(212, 160, 23, 0.1);
+  }
+
+  .shimmer-text {
+    background: linear-gradient(90deg, #D4A017 25%, #F5D05A 50%, #D4A017 75%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 2.5s linear infinite;
+  }
+}
+
+/* Coin 3D animation */
+.coin-wrapper {
+  perspective: 1000px;
+}
+
+.coin {
+  width: 200px;
+  height: 200px;
+  position: relative;
+  transform-style: preserve-3d;
+  animation: coinSpin 4s linear infinite;
+}
+
+@keyframes coinSpin {
+  0%   { transform: rotateY(0deg); }
+  100% { transform: rotateY(360deg); }
+}
+
+.coin-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  backface-visibility: hidden;
+}
+
+.coin-front {
+  background: radial-gradient(circle at 35% 35%, #F5D05A, #D4A017 50%, #92650A);
+  box-shadow: inset -8px -8px 20px rgba(0,0,0,0.4), inset 4px 4px 12px rgba(255,255,255,0.3);
+}
+
+.coin-back {
+  background: radial-gradient(circle at 65% 35%, #D4A017, #92650A 50%, #6B4C08);
+  transform: rotateY(180deg);
+  box-shadow: inset -8px -8px 20px rgba(0,0,0,0.4), inset 4px 4px 12px rgba(255,255,255,0.2);
+}
+
+.coin-edge {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: linear-gradient(90deg, #B8860B, #F5D05A, #B8860B);
+  transform: rotateY(90deg) scaleX(0.15);
+}
+
+/* Particle float effect */
+@keyframes particleFloat {
+  0% { transform: translateY(0) translateX(0) scale(1); opacity: 0.7; }
+  33% { transform: translateY(-30px) translateX(15px) scale(1.1); opacity: 1; }
+  66% { transform: translateY(-15px) translateX(-10px) scale(0.9); opacity: 0.8; }
+  100% { transform: translateY(0) translateX(0) scale(1); opacity: 0.7; }
+}
+
+.particle {
+  animation: particleFloat var(--duration, 4s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+/* Auction countdown ring */
+@keyframes ringProgress {
+  from { stroke-dashoffset: 283; }
+  to { stroke-dashoffset: 0; }
+}
+
+/* Toast animations */
+@keyframes slideInRight {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideOutRight {
+  from { transform: translateX(0); opacity: 1; }
+  to { transform: translateX(100%); opacity: 0; }
+}
+
+.toast-enter { animation: slideInRight 0.3s ease-out; }
+.toast-exit { animation: slideOutRight 0.3s ease-in; }
+
+/* Bid pulse effect */
+@keyframes bidPulse {
+  0% { box-shadow: 0 0 0 0 rgba(212, 160, 23, 0.6); }
+  70% { box-shadow: 0 0 0 15px rgba(212, 160, 23, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(212, 160, 23, 0); }
+}
+
+.bid-pulse {
+  animation: bidPulse 1s ease-out;
+}
+
+/* Page transitions */
+.page-enter {
+  animation: pageEnter 0.4s ease-out;
+}
+
+@keyframes pageEnter {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
