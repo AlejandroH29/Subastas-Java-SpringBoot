@@ -12,9 +12,17 @@ Se priorizó el diseño orientado a dominio, la separación de responsabilidades
 ---
 ## 🎥 Demo del sistema en tiempo real
 
-[![Demo en tiempo real](./demo.gif)](https://www.youtube.com/watch?v=PvyHKctHuZo)
+Este video muestra:
 
-👉 Haz click para ver el video completo
+- Creación de subasta
+- Múltiples usuarios conectados
+- Pujas en tiempo real mediante WebSockets
+- Actualización instantánea entre clientes
+- Cierre automático de subasta
+
+[![Demo del sistema](https://img.youtube.com/vi/PvyHKctHuZo/maxresdefault.jpg)](https://www.youtube.com/watch?v=PvyHKctHuZo)
+
+👉 Haz click en la imagen para ver el video completo
 ---
 
 ## 🧱 2. Arquitectura
