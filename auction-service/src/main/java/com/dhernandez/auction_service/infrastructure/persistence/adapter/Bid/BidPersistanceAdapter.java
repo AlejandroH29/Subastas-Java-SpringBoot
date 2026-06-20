@@ -36,7 +36,7 @@ public class BidPersistanceAdapter implements SaveBidPort, FindAuctionHistoryBid
         Pageable pageable = org.springframework.data.domain.PageRequest.of(pageRequest.getPage(), 
                                                                             pageRequest.getSize(),
                                                                             Sort.by("timeStamp").descending()
-                                                                                    .and(Sort.by("idAuction").descending()));
+                                                                                    .and(Sort.by("auctionId").descending()));
         Page<BidJpaEntity> pagination = bidRepository.findByAuctionId(auctionId, pageable);
         List<Bid> bidsHistory = new ArrayList<>();
         for(BidJpaEntity bid : pagination.getContent()){

@@ -17,6 +17,8 @@ import com.dhernandez.auction_service.application.useCase.User.CreateUserUseCase
 import com.dhernandez.auction_service.application.useCase.User.CreateUserUseCaseImp;
 import com.dhernandez.auction_service.application.useCase.User.LoginUseCase;
 import com.dhernandez.auction_service.application.useCase.User.LoginUseCaseImp;
+import com.dhernandez.auction_service.application.useCase.User.SendEmailVerificationUseCase;
+import com.dhernandez.auction_service.application.useCase.User.SendEmailVerificationUseCaseImp;
 
 @Configuration
 public class UserUseCaseConfig {
@@ -28,5 +30,12 @@ public class UserUseCaseConfig {
     @Bean
     public LoginUseCase loginUseCase(FindUserByEmailPort findUserByEmailPort, PasswordVerificationPort passwordVerification, JwtGeneratorPort jwtGenerator){
         return new LoginUseCaseImp(findUserByEmailPort, passwordVerification, jwtGenerator);
+    }
+
+    @Bean SendEmailVerificationUseCase sendEmailVerification(FindUserByEmailPort findUserByEmailport,
+                                                                MadeTokenPasswordPort madeTokenPassword,
+                                                                SaveTokenVerificationPort saveTokenVerificationPort,
+                                                                EmailService emailService){
+        return new SendEmailVerificationUseCaseImp(findUserByEmailport, madeTokenPassword, saveTokenVerificationPort, emailService);
     }
 }

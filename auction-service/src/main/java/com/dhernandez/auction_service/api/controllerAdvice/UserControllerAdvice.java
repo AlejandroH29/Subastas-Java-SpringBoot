@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.dhernandez.auction_service.application.useCase.Exception.UserAlreadyVerified;
 import com.dhernandez.auction_service.domain.exception.ErrorCreatingUser;
 import com.dhernandez.auction_service.domain.exception.ErrorFindingUser;
 
@@ -18,4 +19,8 @@ public class UserControllerAdvice {
     public ResponseEntity<String> errorFindingUser(ErrorFindingUser error){
         return new ResponseEntity<String>(error.getMessage(), HttpStatus.NOT_ACCEPTABLE);
     } 
+    @ExceptionHandler(UserAlreadyVerified.class)
+    public ResponseEntity<String> userAlreadyVerified(UserAlreadyVerified error){
+        return new ResponseEntity<String>(error.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+    }
 }

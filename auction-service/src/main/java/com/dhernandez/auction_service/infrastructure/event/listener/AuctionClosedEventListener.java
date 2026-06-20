@@ -18,7 +18,7 @@ public class AuctionClosedEventListener {
         this.auctionClosedEventMapper = auctionClosedEventMapper;
         this.webSocketAuctionSender = webSocketAuctionSender;
     }
-
+    
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void handle(AuctionClosed auctionClosed){
         AuctionClosedEventPayload payLoad = auctionClosedEventMapper.map(auctionClosed);
