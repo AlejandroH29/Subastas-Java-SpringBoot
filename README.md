@@ -20,9 +20,11 @@ Este video muestra:
 - Actualización instantánea entre clientes
 - Cierre automático de subasta
 
-[![Demo del sistema](https://img.youtube.com/vi/PvyHKctHuZo/maxresdefault.jpg)](https://www.youtube.com/watch?v=PvyHKctHuZo)
+[![](https://markdown-videos.data.dev/youtube/PvyHKctHuZo)](https://youtu.be/PvyHKctHuZo)
 
-👉 Haz click en la imagen para ver el video completo
+👉 Ver video completo:  
+https://www.youtube.com/watch?v=PvyHKctHuZo
+
 ---
 
 ## 🧱 2. Arquitectura
