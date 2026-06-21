@@ -9,7 +9,6 @@ El proyecto implementa un motor de subastas que permite a múltiples usuarios pa
 Se priorizó el diseño orientado a dominio, la separación de responsabilidades y la implementación de mecanismos reales de backend como eventos de dominio, seguridad con JWT y procesos automatizados.
 
 ---
----
 ## 🎥 Demo del sistema en tiempo real
 
 Este video muestra:
@@ -20,11 +19,9 @@ Este video muestra:
 - Actualización instantánea entre clientes
 - Cierre automático de subasta
 
-[![](https://markdown-videos.data.dev/youtube/PvyHKctHuZo)](https://youtu.be/PvyHKctHuZo)
+[![Demo del sistema](https://img.youtube.com/vi/PvyHKctHuZo/maxresdefault.jpg)](https://www.youtube.com/watch?v=PvyHKctHuZo)
 
-👉 Ver video completo:  
-https://www.youtube.com/watch?v=PvyHKctHuZo
-
+👉 Haz click en la imagen para ver el video completo
 ---
 
 ## 🧱 2. Arquitectura
